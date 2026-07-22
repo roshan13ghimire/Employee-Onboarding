@@ -1,34 +1,52 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
 
+import Navbar from "../components/Navbar";
+import DocumentUpload from "../components/DocumentUpload";
 
-function Dashboard(){
+
+function Dashboard() {
 
     const [documents, setDocuments] = useState([]);
 
 
-    useEffect(()=>{
+    const fetchDocuments = async () => {
+
+        try {
+
+            const response = await api.get(
+                "/my-documents/"
+            );
+
+
+            console.log(response.data);
+
+            setDocuments(response.data);
+
+
+        } catch (error) {
+
+            console.log(error);
+
+        }
+
+    };
+
+
+    useEffect(() => {
 
         fetchDocuments();
 
-    },[]);
+    }, []);
 
-
-
-    const fetchDocuments = async()=>{
-
-        const response = await api.get(
-            "/my-documents/"
-        );
-
-        setDocuments(response.data);
-
-    };
 
 
     return (
 
         <div>
+
+            <Navbar />
+
 
             <h1>
                 Employee Dashboard
@@ -40,28 +58,58 @@ function Dashboard(){
             </h2>
 
 
+
             {
-                documents.map((doc)=>(
+                documents.length === 0 ?
 
-                    <div key={doc.id}>
+                (
 
-                        <h3>
-                            {doc.document_title}
-                        </h3>
+                    <p>
+                        No documents assigned
+                    </p>
 
-                        <p>
-                            Status: {doc.status}
-                        </p>
+                )
 
-                    </div>
+                :
 
-                ))
+                (
+
+                    documents.map((doc) => (
+
+                        <div key={doc.id}>
+
+                            <h3>
+                                {doc.document_title}
+                            </h3>
+
+
+                            <p>
+                                Status: {doc.status}
+                            </p>
+
+
+                            {
+                                doc.status !== "SUBMITTED" &&
+
+                                <DocumentUpload
+                                    documentId={doc.id}
+                                    refreshDocuments={fetchDocuments}
+                                />
+
+                            }
+
+
+                        </div>
+
+                    ))
+
+                )
             }
 
 
         </div>
 
-    )
+    );
 
 }
 

@@ -1,49 +1,60 @@
 import { useState } from "react";
 import api from "../services/api";
+import { useNavigate } from "react-router-dom";
 
 
-function Login(){
+function Login() {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
+    const navigate = useNavigate();
 
-    const handleLogin = async (e)=>{
+
+    const handleLogin = async (e) => {
 
         e.preventDefault();
 
-        const response = await api.post(
-            "/token/",
-            {
-                username,
-                password
-            }
-        );
+        try {
+
+            const response = await api.post(
+                "/token/",
+                {
+                    username,
+                    password
+                }
+            );
 
 
-        localStorage.setItem(
-    "access",
-    response.data.access
-);
+            localStorage.setItem(
+                "access",
+                response.data.access
+            );
 
-localStorage.setItem(
-    "refresh",
-    response.data.refresh
-);
+            localStorage.setItem(
+                "refresh",
+                response.data.refresh
+            );
 
-console.log("Login successful");
 
+            navigate("/dashboard");
+
+
+        } catch (error) {
+
+            console.log(error);
+            alert("Invalid login");
+
+        }
     };
 
 
     return (
-
         <div>
 
-            <h2>
-                Login
-            </h2>
-
+            <h1>
+                Employee Onboarding Login
+            </h1>
 
             <form onSubmit={handleLogin}>
 
@@ -52,26 +63,18 @@ console.log("Login successful");
                     placeholder="Username"
                     value={username}
                     onChange={
-                        (e)=>setUsername(e.target.value)
+                        e => setUsername(e.target.value)
                     }
                 />
-
-
-                <br/>
-
 
                 <input
                     type="password"
                     placeholder="Password"
                     value={password}
                     onChange={
-                        (e)=>setPassword(e.target.value)
+                        e => setPassword(e.target.value)
                     }
                 />
-
-
-                <br/>
-
 
                 <button>
                     Login
@@ -80,9 +83,7 @@ console.log("Login successful");
             </form>
 
         </div>
-
-    )
-
+    );
 }
 
 

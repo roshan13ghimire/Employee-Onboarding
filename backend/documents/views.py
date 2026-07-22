@@ -1,5 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from accounts.models import EmployeeProfile
 from rest_framework.parsers import MultiPartParser
@@ -10,6 +12,9 @@ from .serializers import (
     EmployeeDocumentSerializer,
     HRDocumentStatusSerializer
 )
+from accounts.permissions import IsHRUser
+from accounts.permissions import IsEmployeeUser
+from django.shortcuts import get_object_or_404
 
 from .models import Document
 from .serializers import DocumentSerializer
@@ -17,7 +22,11 @@ from .serializers import DocumentSerializer
 
 class DocumentListAPIView(APIView):
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [
+    IsAuthenticated,
+    IsHRUser
+]
+    
 
     def get(self, request):
 
@@ -34,11 +43,12 @@ class DocumentListAPIView(APIView):
 
 class MyDocumentsAPIView(APIView):
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsEmployeeUser]
 
     def get(self, request):
 
-        employee = EmployeeProfile.objects.get(
+        employee = get_object_or_404(
+            EmployeeProfile,
             user=request.user
         )
 
@@ -52,10 +62,12 @@ class MyDocumentsAPIView(APIView):
         )
 
         return Response(serializer.data)
-    
 class UploadDocumentAPIView(APIView):
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [
+    IsAuthenticated,
+    IsEmployeeUser
+]
     parser_classes = [MultiPartParser]
 
     def post(self, request, id):
@@ -63,19 +75,27 @@ class UploadDocumentAPIView(APIView):
         employee = EmployeeProfile.objects.get(
             user=request.user
         )
+        
 
-        employee_document = EmployeeDocument.objects.get(
-            id=id,
-            employee=employee
+        employee_document = get_object_or_404(
+    EmployeeDocument,
+    id=id,
+    employee=employee
+)
+
+        serializer = EmployeeDocumentSerializer(
+            employee_document,
+            data=request.data,
+            partial=True
         )
 
-        employee_document.uploaded_file = request.FILES.get(
-            'uploaded_file'
+        serializer.is_valid(
+            raise_exception=True
         )
 
-        employee_document.status = 'SUBMITTED'
-
-        employee_document.save()
+        serializer.save(
+            status='SUBMITTED'
+        )
 
         return Response(
             {
@@ -90,13 +110,6 @@ class HRDocumentStatusAPIView(APIView):
 
     def get(self, request):
 
-        if request.user.role != "HR":
-            return Response(
-                {
-                    "detail": "HR access required"
-                },
-                status=403
-            )
 
         documents = EmployeeDocument.objects.all()
 
