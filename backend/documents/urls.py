@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import (
     DocumentListAPIView,
-    MyDocumentsAPIView,UploadDocumentAPIView,HRDocumentStatusAPIView
+    MyDocumentsAPIView,UploadDocumentAPIView,HRDocumentStatusAPIView, HRDocumentsAPIView
 )
 
 
@@ -19,7 +19,11 @@ urlpatterns = [
     UploadDocumentAPIView.as_view()
 ),
 path(
-    'hr/documents-status/',
+    "hr-documents/<int:id>/status/",
     HRDocumentStatusAPIView.as_view()
+),
+path(
+    "hr-documents/",
+    HRDocumentsAPIView.as_view()
 ),
 ]

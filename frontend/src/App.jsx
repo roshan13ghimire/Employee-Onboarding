@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./templates/pages/Login";
 import Dashboard from "./templates/pages/Dashboard";
 import ProtectedRoute from "./templates/components/ProtectedRoute";
+import HRDashboard from "./templates/pages/HRDashboard";
 
 
 function App() {
@@ -25,6 +26,10 @@ function App() {
             <Dashboard />
         </ProtectedRoute>
     }
+/>
+<Route
+    path="/hr-dashboard"
+    element={<HRDashboard />}
 />
 
             </Routes>

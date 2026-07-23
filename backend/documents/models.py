@@ -43,11 +43,11 @@ class Document(models.Model):
 class EmployeeDocument(models.Model):
 
     STATUS_CHOICES = (
-        ('PENDING', 'Pending'),
-        ('SUBMITTED', 'Submitted'),
-        ('APPROVED', 'Approved'),
-    )
-
+    ('PENDING', 'Pending'),
+    ('SUBMITTED', 'Submitted'),
+    ('APPROVED', 'Approved'),
+    ('REJECTED', 'Rejected'),
+)
     employee = models.ForeignKey(
         EmployeeProfile,
         on_delete=models.CASCADE

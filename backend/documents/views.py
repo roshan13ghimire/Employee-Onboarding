@@ -18,6 +18,8 @@ from django.shortcuts import get_object_or_404
 
 from .models import Document
 from .serializers import DocumentSerializer
+from accounts.permissions import IsHRUser
+from  .serializers import HRDocumentSerializer
 
 
 class DocumentListAPIView(APIView):
@@ -56,7 +58,7 @@ class MyDocumentsAPIView(APIView):
             employee=employee
         )
 
-        serializer = EmployeeDocumentSerializer(
+        serializer =  HRDocumentSerializer(
             documents,
             many=True
         )
@@ -106,14 +108,65 @@ class UploadDocumentAPIView(APIView):
     
 class HRDocumentStatusAPIView(APIView):
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [
+        IsAuthenticated,
+        IsHRUser
+    ]
+
+
+    def post(self, request, id):
+
+        document = get_object_or_404(
+            EmployeeDocument,
+            id=id
+        )
+
+
+        action = request.data.get("action")
+
+
+        if action == "APPROVE":
+
+            document.status = "APPROVED"
+
+
+        elif action == "REJECT":
+
+            document.status = "REJECTED"
+
+
+        else:
+
+            return Response(
+                {
+                    "error": "Invalid action"
+                },
+                status=400
+            )
+
+
+        document.save()
+
+
+        return Response(
+            {
+                "message": "Status updated",
+                "status": document.status
+            }
+        )
+
+class HRDocumentsAPIView(APIView):
+
+    permission_classes = [
+        IsHRUser
+    ]
+
 
     def get(self, request):
 
-
         documents = EmployeeDocument.objects.all()
 
-        serializer = HRDocumentStatusSerializer(
+        serializer = EmployeeDocumentSerializer(
             documents,
             many=True
         )

@@ -81,3 +81,41 @@ class HRDocumentStatusSerializer(serializers.ModelSerializer):
             'status',
             'submitted_at',
         ]
+class HRDocumentSerializer(serializers.ModelSerializer):
+
+    employee_name = serializers.CharField(
+        source="employee.user.username",
+        read_only=True
+    )
+
+    department = serializers.CharField(
+        source="employee.department",
+        read_only=True
+    )
+
+    job_title = serializers.CharField(
+        source="employee.job_title",
+        read_only=True
+    )
+
+
+    document_title = serializers.CharField(
+        source="document.title",
+        read_only=True
+    )
+
+
+    class Meta:
+
+        model = EmployeeDocument
+
+        fields = [
+            "id",
+            "employee_name",
+            "department",
+            "job_title",
+            "document_title",
+            "status",
+            "uploaded_file",
+            "submitted_at",
+        ]
