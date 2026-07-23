@@ -1,7 +1,9 @@
 from django.urls import path
 from .views import (
+    AssignDocumentAPIView,
     DocumentListAPIView,
-    MyDocumentsAPIView,UploadDocumentAPIView,HRDocumentStatusAPIView, HRDocumentsAPIView
+    MyDocumentsAPIView,UploadDocumentAPIView,HRDocumentStatusAPIView, HRDocumentsAPIView,CreateDocumentAPIView,
+    AssignDocumentAPIView
 )
 
 
@@ -25,5 +27,13 @@ path(
 path(
     "hr-documents/",
     HRDocumentsAPIView.as_view()
+),
+path(
+    "create-document/",
+    CreateDocumentAPIView.as_view()
+),
+path(
+    "assign-document/",
+    AssignDocumentAPIView.as_view()
 ),
 ]

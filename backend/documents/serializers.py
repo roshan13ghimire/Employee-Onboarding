@@ -119,3 +119,21 @@ class HRDocumentSerializer(serializers.ModelSerializer):
             "uploaded_file",
             "submitted_at",
         ]
+class CreateDocumentSerializer(serializers.ModelSerializer):
+
+    class Meta:
+
+        model = Document
+
+        fields = [
+            "title",
+            "category",
+            "job_type",
+            "version",
+            "file"
+        ]
+class AssignDocumentSerializer(serializers.Serializer):
+
+    employee_id = serializers.IntegerField()
+
+    document_id = serializers.IntegerField()

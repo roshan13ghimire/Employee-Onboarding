@@ -4,6 +4,9 @@ import Login from "./templates/pages/Login";
 import Dashboard from "./templates/pages/Dashboard";
 import ProtectedRoute from "./templates/components/ProtectedRoute";
 import HRDashboard from "./templates/pages/HRDashboard";
+import Signup from "./templates/pages/Signup";
+import AssignDocument from "./templates/pages/AssignDocument";
+import HRDocuments from "./templates/pages/HRDocuments";
 
 
 function App() {
@@ -30,6 +33,18 @@ function App() {
 <Route
     path="/hr-dashboard"
     element={<HRDashboard />}
+/>
+<Route
+    path="/signup"
+    element={<Signup />}
+/>
+<Route
+    path="/assign-document"
+    element={<AssignDocument />}
+/>
+<Route
+    path="/hr-documents"
+    element={<HRDocuments />}
 />
 
             </Routes>

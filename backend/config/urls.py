@@ -52,4 +52,8 @@ path(
     ),
     name='swagger-ui'
 ),
+path(
+    "api/",
+    include("accounts.urls")
+),
 ]

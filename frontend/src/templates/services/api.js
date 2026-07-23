@@ -10,11 +10,20 @@ api.interceptors.request.use(
 
         const token = localStorage.getItem("access");
 
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
+
+        if(
+            token &&
+            !config.url.includes("/signup/")
+        ) {
+
+            config.headers.Authorization =
+            `Bearer ${token}`;
+
         }
 
+
         return config;
+
     }
 );
 

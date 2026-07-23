@@ -10,7 +10,9 @@ from .models import Document, EmployeeDocument
 from .serializers import (
     DocumentSerializer,
     EmployeeDocumentSerializer,
-    HRDocumentStatusSerializer
+    HRDocumentStatusSerializer,
+    AssignDocumentSerializer,
+     HRDocumentSerializer
 )
 from accounts.permissions import IsHRUser
 from accounts.permissions import IsEmployeeUser
@@ -166,9 +168,89 @@ class HRDocumentsAPIView(APIView):
 
         documents = EmployeeDocument.objects.all()
 
-        serializer = EmployeeDocumentSerializer(
+
+        serializer = HRDocumentSerializer(
             documents,
             many=True
         )
 
+
         return Response(serializer.data)
+
+class CreateDocumentAPIView(APIView):
+
+    permission_classes = [
+        IsHRUser
+    ]
+
+
+    def post(self, request):
+
+        serializer = CreateDocumentSerializer(
+            data=request.data
+        )
+
+
+        if serializer.is_valid():
+
+            serializer.save(
+                uploaded_by=request.user
+            )
+
+
+            return Response(
+                {
+                    "message": "Document created successfully"
+                },
+                status=201
+            )
+
+
+        return Response(
+            serializer.errors,
+            status=400
+        )
+
+class AssignDocumentAPIView(APIView):
+
+    permission_classes = [
+        IsHRUser
+    ]
+
+
+    def post(self, request):
+
+        serializer = AssignDocumentSerializer(
+            data=request.data
+        )
+
+
+        serializer.is_valid(
+            raise_exception=True
+        )
+
+
+        employee = get_object_or_404(
+            EmployeeProfile,
+            id=serializer.validated_data["employee_id"]
+        )
+
+
+        document = get_object_or_404(
+            Document,
+            id=serializer.validated_data["document_id"]
+        )
+
+
+        EmployeeDocument.objects.create(
+            employee=employee,
+            document=document
+        )
+
+
+        return Response(
+            {
+                "message": "Document assigned successfully"
+            },
+            status=201
+        )

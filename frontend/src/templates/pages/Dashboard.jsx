@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
 
-import Navbar from "../components/Navbar";
 import DocumentUpload from "../components/DocumentUpload";
+import Layout from "../components/Layout";
 
 
 function Dashboard() {
@@ -33,6 +33,7 @@ function Dashboard() {
     };
 
 
+
     useEffect(() => {
 
         fetchDocuments();
@@ -41,73 +42,113 @@ function Dashboard() {
 
 
 
+
     return (
 
-        <div>
-
-            <Navbar />
+        <Layout>
 
 
-            <h1>
+            <h1 className="text-3xl font-bold mb-6">
                 Employee Dashboard
             </h1>
 
 
-            <h2>
+
+            <h2 className="text-xl font-semibold mb-4">
                 My Documents
             </h2>
+
 
 
 
             {
                 documents.length === 0 ?
 
+
                 (
 
-                    <p>
+                    <p className="text-gray-600">
                         No documents assigned
                     </p>
 
                 )
 
+
                 :
+
 
                 (
 
-                    documents.map((doc) => (
-
-                        <div key={doc.id}>
-
-                            <h3>
-                                {doc.document_title}
-                            </h3>
+                    <div className="space-y-4">
 
 
-                            <p>
-                                Status: {doc.status}
-                            </p>
+                    {
+                        documents.map((doc) => (
 
 
-                            {
-                                doc.status !== "SUBMITTED" &&
-
-                                <DocumentUpload
-                                    documentId={doc.id}
-                                    refreshDocuments={fetchDocuments}
-                                />
-
-                            }
+                            <div
+                                key={doc.id}
+                                className="bg-white rounded-lg shadow p-6"
+                            >
 
 
-                        </div>
+                                <h3 className="text-xl font-bold">
+                                    {doc.document_title}
+                                </h3>
 
-                    ))
+
+
+                                <p className="mt-2">
+                                    Status:
+
+                                    <span className="ml-2 font-semibold">
+                                        {doc.status}
+                                    </span>
+
+                                </p>
+
+
+
+                                {
+                                    doc.status === "PENDING" &&
+
+
+                                    <div className="mt-4">
+
+
+                                        <DocumentUpload
+
+                                            documentId={doc.id}
+
+                                            refreshDocuments={
+                                                fetchDocuments
+                                            }
+
+                                        />
+
+
+                                    </div>
+
+                                }
+
+
+
+                            </div>
+
+
+                        ))
+                    }
+
+
+                    </div>
 
                 )
+
             }
 
 
-        </div>
+
+        </Layout>
 
     );
 
