@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 function Signup() {
 
+
     const navigate = useNavigate();
 
 
@@ -42,6 +43,7 @@ function Signup() {
 
         try {
 
+
             await api.post(
                 "/signup/",
                 formData
@@ -58,11 +60,14 @@ function Signup() {
 
         } catch(error) {
 
+
             console.log(error.response);
+
 
             alert(
                 "Signup failed"
             );
+
 
         }
 
@@ -72,65 +77,165 @@ function Signup() {
 
     return (
 
-        <div>
-
-            <h1>
-                Employee Signup
-            </h1>
+        <div className="min-h-screen flex items-center justify-center bg-gray-100">
 
 
-            <form onSubmit={handleSubmit}>
+            <div className="bg-white w-full max-w-md p-8 rounded-xl shadow-lg">
 
 
-                <input
-                    name="username"
-                    placeholder="Username"
-                    onChange={handleChange}
-                />
+                <h1 className="text-3xl font-bold text-center text-gray-800">
+
+                    Create Employee Account
+
+                </h1>
 
 
-                <input
-                    name="email"
-                    placeholder="Email"
-                    onChange={handleChange}
-                />
+                <p className="text-center text-gray-500 mt-2 mb-6">
+
+                    Join the Employee Onboarding Portal
+
+                </p>
 
 
-                <input
-                    name="password"
-                    type="password"
-                    placeholder="Password"
-                    onChange={handleChange}
-                />
+
+                <form 
+                    onSubmit={handleSubmit}
+                    className="space-y-4"
+                >
 
 
-                <input
-                    name="employee_id"
-                    placeholder="Employee ID"
-                    onChange={handleChange}
-                />
+
+                    <input
+
+                        name="username"
+
+                        placeholder="Username"
+
+                        onChange={handleChange}
+
+                        className="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+
+                    />
 
 
-                <input
-                    name="department"
-                    placeholder="Department"
-                    onChange={handleChange}
-                />
+
+                    <input
+
+                        name="email"
+
+                        type="email"
+
+                        placeholder="Email Address"
+
+                        onChange={handleChange}
+
+                        className="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+
+                    />
 
 
-                <input
-                    name="job_title"
-                    placeholder="Job Title"
-                    onChange={handleChange}
-                />
+
+                    <input
+
+                        name="password"
+
+                        type="password"
+
+                        placeholder="Password"
+
+                        onChange={handleChange}
+
+                        className="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+
+                    />
 
 
-                <button>
-                    Create Account
-                </button>
+
+                    <input
+
+                        name="employee_id"
+
+                        placeholder="Employee ID"
+
+                        onChange={handleChange}
+
+                        className="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+
+                    />
 
 
-            </form>
+
+                    <input
+
+                        name="department"
+
+                        placeholder="Department"
+
+                        onChange={handleChange}
+
+                        className="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+
+                    />
+
+
+
+                    <input
+
+                        name="job_title"
+
+                        placeholder="Job Title"
+
+                        onChange={handleChange}
+
+                        className="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+
+                    />
+
+
+
+                    <button
+
+                        type="submit"
+
+                        className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+
+                    >
+
+                        Create Account
+
+                    </button>
+
+
+
+                </form>
+
+
+
+
+                <div className="text-center mt-6 text-gray-600">
+
+
+                    Already have an account?
+
+
+                    <button
+
+                        onClick={() => navigate("/login")}
+
+                        className="ml-2 text-blue-600 hover:underline"
+
+                    >
+
+                        Login
+
+                    </button>
+
+
+                </div>
+
+
+
+            </div>
 
 
         </div>

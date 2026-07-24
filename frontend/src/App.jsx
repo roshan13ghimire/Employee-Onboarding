@@ -7,6 +7,7 @@ import HRDashboard from "./templates/pages/HRDashboard";
 import Signup from "./templates/pages/Signup";
 import AssignDocument from "./templates/pages/AssignDocument";
 import HRDocuments from "./templates/pages/HRDocuments";
+import Home from "./templates/pages/Home";
 
 
 function App() {
@@ -45,6 +46,10 @@ function App() {
 <Route
     path="/hr-documents"
     element={<HRDocuments />}
+/>
+<Route
+    path="/"
+    element={<Home />}
 />
 
             </Routes>
