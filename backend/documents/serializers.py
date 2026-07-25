@@ -1,97 +1,168 @@
 from rest_framework import serializers
-from .models import Document
-from .models import EmployeeDocument
+
+from .models import Document, EmployeeDocument
+
+
+
 
 
 class DocumentSerializer(serializers.ModelSerializer):
 
     class Meta:
+
         model = Document
+
+
         fields = [
-            'id',
-            'title',
-            'category',
-            'job_type',
-            'version',
-            'file',
+            "id",
+            "title",
+            "category",
+            "job_type",
+            "version",
+            "file",
+            "action_type",
         ]
+
+
+
+
+
+
 
 
 
 class EmployeeDocumentSerializer(serializers.ModelSerializer):
 
+
     document_title = serializers.CharField(
-        source='document.title',
+        source="document.title",
         read_only=True
     )
 
+
+    action_type = serializers.CharField(
+        source="document.action_type",
+        read_only=True
+    )
+
+
+
     class Meta:
+
         model = EmployeeDocument
 
+
         fields = [
-            'id',
-            'document_title',
-            'status',
-            'uploaded_file',
-            'submitted_at',
+            "id",
+            "document_title",
+            "action_type",
+            "status",
+            "uploaded_file",
+            "submitted_at",
         ]
+
+
+
+
 
     def validate_uploaded_file(self, file):
 
         allowed_extensions = [
-            '.pdf',
-            '.doc',
-            '.docx',
+            ".pdf",
+            ".doc",
+            ".docx",
         ]
+
 
         file_name = file.name.lower()
 
-        if not any(file_name.endswith(ext) for ext in allowed_extensions):
+
+
+        if not any(
+            file_name.endswith(ext)
+            for ext in allowed_extensions
+        ):
+
             raise serializers.ValidationError(
                 "Only PDF, DOC, and DOCX files are allowed."
             )
 
-        max_size = 5 * 1024 * 1024  # 5 MB
+
+
+        max_size = 5 * 1024 * 1024
+
+
 
         if file.size > max_size:
+
             raise serializers.ValidationError(
                 "File size cannot exceed 5 MB."
             )
 
+
+
         return file
+
+
+
+
+
+
+
+
+
+
 class HRDocumentStatusSerializer(serializers.ModelSerializer):
 
-    employee_name = serializers.CharField(
-        source='employee.user.username',
-        read_only=True
-    )
-
-    document_name = serializers.CharField(
-        source='document.title',
-        read_only=True
-    )
-
-    class Meta:
-        model = EmployeeDocument
-
-        fields = [
-            'id',
-            'employee_name',
-            'document_name',
-            'status',
-            'submitted_at',
-        ]
-class HRDocumentSerializer(serializers.ModelSerializer):
 
     employee_name = serializers.CharField(
         source="employee.user.username",
         read_only=True
     )
 
+
+    document_name = serializers.CharField(
+        source="document.title",
+        read_only=True
+    )
+
+
+
+    class Meta:
+
+        model = EmployeeDocument
+
+
+        fields = [
+            "id",
+            "employee_name",
+            "document_name",
+            "status",
+            "submitted_at",
+        ]
+
+
+
+
+
+
+
+
+
+class HRDocumentSerializer(serializers.ModelSerializer):
+
+
+    employee_name = serializers.CharField(
+        source="employee.user.username",
+        read_only=True
+    )
+
+
     department = serializers.CharField(
         source="employee.department",
         read_only=True
     )
+
 
     job_title = serializers.CharField(
         source="employee.job_title",
@@ -105,35 +176,93 @@ class HRDocumentSerializer(serializers.ModelSerializer):
     )
 
 
+    action_type = serializers.CharField(
+        source="document.action_type",
+        read_only=True
+    )
+
+
+    document_file = serializers.FileField(
+        source="document.file",
+        read_only=True
+    )
+
+
+
     class Meta:
 
         model = EmployeeDocument
 
+
         fields = [
+
             "id",
+
             "employee_name",
+
             "department",
+
             "job_title",
+
             "document_title",
+
+            "document_file",
+
+            "action_type",
+
             "status",
+
             "uploaded_file",
+
             "submitted_at",
+
         ]
+
+
+
+
+
+
+
+
+
 class CreateDocumentSerializer(serializers.ModelSerializer):
+
 
     class Meta:
 
         model = Document
 
+
+
         fields = [
+
             "title",
+
             "category",
+
             "job_type",
+
             "version",
-            "file"
+
+            "file",
+
+            "action_type",
+
         ]
+
+
+
+
+
+
+
+
+
 class AssignDocumentSerializer(serializers.Serializer):
 
+
     employee_id = serializers.IntegerField()
+
 
     document_id = serializers.IntegerField()

@@ -1,4 +1,5 @@
 import Sidebar from "./Sidebar";
+import Navbar from "./Navbar";
 
 
 function Layout({children}) {
@@ -6,19 +7,46 @@ function Layout({children}) {
 
     return (
 
-        <div className="flex">
+        <div
+            className="
+                min-h-screen
+                bg-[#FAFAF8]
+            "
+        >
 
 
-            <Sidebar />
+            <Navbar />
 
 
-            <main className="flex-1 bg-gray-100 min-h-screen p-8">
+            <div
+                className="
+                    flex
+                "
+            >
 
 
-                {children}
+                <Sidebar />
 
 
-            </main>
+
+                <main
+
+                    className="
+                        flex-1
+                        p-8
+                    "
+
+                >
+
+                    {children}
+
+
+                </main>
+
+
+
+            </div>
+
 
 
         </div>

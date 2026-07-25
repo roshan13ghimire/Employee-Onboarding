@@ -1,6 +1,6 @@
 from .views import SignupAPIView
 from django.urls import path
-from .views import EmployeeListAPIView
+from .views import EmployeeListAPIView, ProfileAPIView
 urlpatterns = [
 path(
     "signup/",
@@ -10,4 +10,9 @@ path(
     "employees/",
     EmployeeListAPIView.as_view()
 ),
+path(
+    "profile/",
+    ProfileAPIView.as_view()
+),
+
 ]

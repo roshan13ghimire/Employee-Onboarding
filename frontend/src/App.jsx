@@ -8,6 +8,13 @@ import Signup from "./templates/pages/Signup";
 import AssignDocument from "./templates/pages/AssignDocument";
 import HRDocuments from "./templates/pages/HRDocuments";
 import Home from "./templates/pages/Home";
+import HRUploadDocument from "./templates/pages/HRUploadDocument";
+import Layout from "./templates/components/Layout";
+import Navbar from "./templates/components/Navbar";
+import Profile from "./templates/pages/Profile";
+import MyDocuments from "./templates/pages/MyDocuments";
+import HRDocumentLibrary from "./templates/pages/HRDocumentLibrary";
+import SignDocument from "./templates/pages/SignDocument";
 
 
 function App() {
@@ -26,30 +33,83 @@ function App() {
 <Route
     path="/dashboard"
     element={
-        <ProtectedRoute>
+        <Layout>
             <Dashboard />
-        </ProtectedRoute>
+        </Layout>
+
     }
 />
 <Route
     path="/hr-dashboard"
-    element={<HRDashboard />}
+    element={<Layout>
+            <HRDashboard />
+        </Layout>}
 />
+<Route
+
+    path="/my-documents"
+
+    element={
+        <Layout>
+            <MyDocuments />
+        </Layout>
+    }
+
+/>
+<Route
+    path="/sign-document/:id"
+    element={
+        <Layout>
+            <SignDocument />
+        </Layout>
+    }
+/>
+        
+
 <Route
     path="/signup"
     element={<Signup />}
 />
 <Route
     path="/assign-document"
-    element={<AssignDocument />}
+    element={        <Layout>
+            <AssignDocument />
+        </Layout>}
 />
 <Route
     path="/hr-documents"
-    element={<HRDocuments />}
+    element={        <Layout>
+            <HRDocuments />
+        </Layout>}
+/>
+<Route
+
+    path="/document-library"
+
+    element={
+        <Layout>
+            <HRDocumentLibrary />
+        </Layout>
+    }
+
 />
 <Route
     path="/"
     element={<Home />}
+/>
+<Route
+    path="/upload-document"
+    element={        <Layout>
+            <HRUploadDocument />
+        </Layout>}
+/>
+<Route
+    path="/profile"
+    element={
+        <Layout>
+            <Profile />
+        </Layout>
+    }
 />
 
             </Routes>

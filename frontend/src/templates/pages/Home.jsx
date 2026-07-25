@@ -6,59 +6,124 @@ function Home() {
 
     return (
 
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-[#FAFAF8]">
 
 
-            {/* Navbar */}
+            {/* Header */}
 
-            <nav className="flex justify-between items-center px-10 py-5 bg-white shadow">
+            <header
+                className="
+                    bg-white
+                    border-b
+                    border-gray-200
+                "
+            >
+
+                <div
+                    className="
+                        max-w-7xl
+                        mx-auto
+                        px-8
+                        py-5
+                        flex
+                        justify-between
+                        items-center
+                    "
+                >
 
 
-                <h1 className="text-2xl font-bold text-blue-600">
-                    Employee Portal
-                </h1>
+                    {/* Branding */}
+
+                    <div>
+
+
+                        <h1
+                            className="
+                                text-2xl
+                                font-semibold
+                                text-[#12304A]
+                            "
+                        >
+                            School Board
+                        </h1>
+
+
+                        <p
+                            className="
+                                text-sm
+                                text-gray-500
+                                mt-1
+                            "
+                        >
+                            Employee Onboarding Portal
+                        </p>
+
+
+                    </div>
 
 
 
-                <div className="space-x-4">
 
 
-                    <Link
-                        to="/login"
+                    {/* Navigation */}
+
+                    <div
                         className="
-                        px-5
-                        py-2
-                        text-blue-600
-                        border
-                        border-blue-600
-                        rounded-lg
-                        hover:bg-blue-50
+                            flex
+                            items-center
+                            gap-8
                         "
                     >
-                        Login
-                    </Link>
+
+
+                        <Link
+
+                            to="/login"
+
+                            className="
+                                text-gray-700
+                                hover:text-[#12304A]
+                                transition
+                            "
+
+                        >
+                            Login
+
+                        </Link>
 
 
 
-                    <Link
-                        to="/signup"
-                        className="
-                        px-5
-                        py-2
-                        bg-blue-600
-                        text-white
-                        rounded-lg
-                        hover:bg-blue-700
-                        "
-                    >
-                        Sign Up
-                    </Link>
+                        <Link
+
+                            to="/signup"
+
+                            className="
+                                bg-[#12304A]
+                                text-white
+                                px-6
+                                py-3
+                                rounded-md
+                                font-medium
+                                hover:bg-[#0D2438]
+                                transition
+                            "
+
+                        >
+                            Employee Access
+
+                        </Link>
+
+
+                    </div>
 
 
                 </div>
 
 
-            </nav>
+            </header>
+
+
+
 
 
 
@@ -66,71 +131,283 @@ function Home() {
             {/* Hero Section */}
 
 
-            <section className="text-center py-20 px-5">
-
-
-                <h2 className="
-                    text-5xl
-                    font-bold
-                    text-gray-800
-                    mb-6
-                ">
-                    Simplify Employee Onboarding
-                </h2>
-
-
-
-                <p className="
-                    text-lg
-                    text-gray-600
-                    max-w-3xl
+            <section
+                className="
+                    max-w-7xl
                     mx-auto
-                    mb-8
-                ">
-                    A secure employee onboarding platform where HR teams
-                    manage documents and employees complete onboarding
-                    tasks from anywhere.
-                </p>
+                    px-8
+                    py-24
+                    grid
+                    md:grid-cols-2
+                    gap-16
+                    items-center
+                "
+            >
 
 
 
-                <div className="space-x-4">
+                {/* Left */}
 
 
-                    <Link
-                        to="/login"
+                <div>
+
+
+                    <p
                         className="
-                        bg-blue-600
-                        text-white
-                        px-8
-                        py-3
-                        rounded-lg
-                        hover:bg-blue-700
+                            text-sm
+                            uppercase
+                            tracking-wider
+                            font-semibold
+                            text-[#C9A227]
+                            mb-5
                         "
                     >
-                        Get Started
-                    </Link>
+                        Human Resources Services
+                    </p>
 
 
 
-                    <Link
-                        to="/signup"
+                    <h2
                         className="
-                        bg-gray-200
-                        px-8
-                        py-3
-                        rounded-lg
-                        hover:bg-gray-300
+                            text-5xl
+                            leading-tight
+                            font-bold
+                            text-[#12304A]
                         "
                     >
-                        Create Account
-                    </Link>
+
+                        Welcome to your
+                        employee onboarding
+                        portal
+
+                    </h2>
+
+
+
+                    <p
+                        className="
+                            mt-7
+                            text-lg
+                            leading-relaxed
+                            text-gray-600
+                            max-w-xl
+                        "
+                    >
+
+                        A secure digital workspace where new employees
+                        can access required documents, complete onboarding
+                        tasks, and stay connected with the Human Resources team.
+
+                    </p>
+
+
+
+
+                    <div
+                        className="
+                            mt-9
+                            flex
+                            gap-4
+                        "
+                    >
+
+
+                        <Link
+
+                            to="/login"
+
+                            className="
+                                bg-[#12304A]
+                                text-white
+                                px-8
+                                py-3
+                                rounded-md
+                                font-medium
+                                hover:bg-[#0D2438]
+                            "
+
+                        >
+                            Access Portal
+
+                        </Link>
+
+
+
+                        <Link
+
+                            to="/signup"
+
+                            className="
+                                border
+                                border-gray-300
+                                text-gray-700
+                                px-8
+                                py-3
+                                rounded-md
+                                hover:bg-white
+                            "
+
+                        >
+                            Create Account
+
+                        </Link>
+
+
+                    </div>
 
 
                 </div>
 
 
+
+
+
+
+
+
+
+                {/* Portal Preview */}
+
+
+                <div
+                    className="
+                        bg-white
+                        border
+                        border-gray-200
+                        shadow-sm
+                        p-8
+                    "
+                >
+
+
+                    <div
+                        className="
+                            border-b
+                            border-gray-200
+                            pb-5
+                            mb-6
+                        "
+                    >
+
+                        <h3
+                            className="
+                                text-xl
+                                font-semibold
+                                text-[#12304A]
+                            "
+                        >
+                            New Employee Checklist
+                        </h3>
+
+
+                        <p
+                            className="
+                                text-sm
+                                text-gray-500
+                                mt-2
+                            "
+                        >
+                            Track your onboarding progress
+                        </p>
+
+
+                    </div>
+
+
+
+
+
+
+                    <ChecklistItem
+                        title="Offer Letter"
+                        status="Completed"
+                        color="text-green-700"
+                    />
+
+
+
+                    <ChecklistItem
+                        title="Employee Policies"
+                        status="Pending"
+                        color="text-yellow-700"
+                    />
+
+
+
+                    <ChecklistItem
+                        title="HR Review"
+                        status="In Progress"
+                        color="text-blue-700"
+                    />
+
+
+
+
+                    <div
+                        className="
+                            mt-8
+                            border-t
+                            pt-5
+                        "
+                    >
+
+                        <p
+                            className="
+                                text-sm
+                                text-gray-500
+                            "
+                        >
+                            Completion Progress
+                        </p>
+
+
+                        <div
+                            className="
+                                mt-3
+                                w-full
+                                bg-gray-200
+                                h-2
+                            "
+                        >
+
+                            <div
+                                className="
+                                    bg-[#12304A]
+                                    h-2
+                                    w-3/4
+                                "
+                            >
+
+                            </div>
+
+
+                        </div>
+
+
+                        <p
+                            className="
+                                mt-2
+                                text-sm
+                                text-gray-600
+                            "
+                        >
+                            75% completed
+                        </p>
+
+
+                    </div>
+
+
+
+                </div>
+
+
+
             </section>
+
+
+
+
 
 
 
@@ -139,74 +416,93 @@ function Home() {
             {/* Features */}
 
 
-            <section className="
-                grid
-                md:grid-cols-3
-                gap-6
-                px-10
-                pb-20
-            ">
 
-
-                <div className="
+            <section
+                className="
                     bg-white
-                    p-6
-                    rounded-xl
-                    shadow
-                ">
+                    border-t
+                    border-gray-200
+                    py-20
+                    px-8
+                "
+            >
 
-                    <h3 className="text-xl font-bold mb-3">
-                        Document Management
-                    </h3>
 
-                    <p className="text-gray-600">
-                        HR can create, assign and track
-                        onboarding documents easily.
+                <div
+                    className="
+                        max-w-7xl
+                        mx-auto
+                    "
+                >
+
+
+                    <h2
+                        className="
+                            text-3xl
+                            font-bold
+                            text-[#12304A]
+                        "
+                    >
+                        A better way to manage onboarding
+                    </h2>
+
+
+                    <p
+                        className="
+                            mt-3
+                            text-gray-600
+                            max-w-2xl
+                        "
+                    >
+                        Designed to simplify document management
+                        between employees, departments, and HR teams.
                     </p>
 
-                </div>
 
 
 
+                    <div
+                        className="
+                            mt-10
+                            grid
+                            md:grid-cols-3
+                            gap-8
+                        "
+                    >
 
 
-                <div className="
-                    bg-white
-                    p-6
-                    rounded-xl
-                    shadow
-                ">
+                        <FeatureCard
 
-                    <h3 className="text-xl font-bold mb-3">
-                        Employee Portal
-                    </h3>
+                            title="Secure Documents"
 
-                    <p className="text-gray-600">
-                        Employees can upload documents
-                        and track onboarding progress.
-                    </p>
+                            text="Employees can access and submit important onboarding documents securely."
 
-                </div>
-
+                        />
 
 
 
+                        <FeatureCard
 
-                <div className="
-                    bg-white
-                    p-6
-                    rounded-xl
-                    shadow
-                ">
+                            title="HR Workflow"
 
-                    <h3 className="text-xl font-bold mb-3">
-                        Secure Access
-                    </h3>
+                            text="HR teams can assign documents and review employee submissions."
 
-                    <p className="text-gray-600">
-                        Role-based authentication keeps
-                        employee data protected.
-                    </p>
+                        />
+
+
+
+                        <FeatureCard
+
+                            title="Progress Tracking"
+
+                            text="Monitor onboarding completion from beginning to approval."
+
+                        />
+
+
+
+                    </div>
+
 
                 </div>
 
@@ -217,17 +513,36 @@ function Home() {
 
 
 
+
+
+
             {/* Footer */}
 
 
-            <footer className="
-                bg-gray-900
-                text-white
-                text-center
-                py-5
-            ">
+            <footer
+                className="
+                    bg-[#12304A]
+                    text-white
+                    py-8
+                    text-center
+                "
+            >
 
-                © 2026 Employee Portal
+                <p>
+                    School Board Employee Onboarding Portal
+                </p>
+
+
+                <p
+                    className="
+                        text-sm
+                        text-gray-300
+                        mt-2
+                    "
+                >
+                    Secure employee services platform
+                </p>
+
 
             </footer>
 
@@ -238,6 +553,104 @@ function Home() {
     );
 
 }
+
+
+
+
+
+
+
+function ChecklistItem({title,status,color}) {
+
+
+    return (
+
+        <div
+            className="
+                flex
+                justify-between
+                items-center
+                py-4
+                border-b
+                border-gray-100
+            "
+        >
+
+            <span
+                className="
+                    text-gray-700
+                "
+            >
+                {title}
+            </span>
+
+
+            <span
+                className={`
+                    font-medium
+                    ${color}
+                `}
+            >
+                {status}
+            </span>
+
+
+        </div>
+
+    );
+
+}
+
+
+
+
+
+
+
+function FeatureCard({title,text}) {
+
+
+    return (
+
+        <div
+            className="
+                border
+                border-gray-200
+                p-7
+                bg-[#FAFAF8]
+            "
+        >
+
+
+            <h3
+                className="
+                    text-xl
+                    font-semibold
+                    text-[#12304A]
+                "
+            >
+                {title}
+            </h3>
+
+
+
+            <p
+                className="
+                    mt-4
+                    text-gray-600
+                    leading-relaxed
+                "
+            >
+                {text}
+            </p>
+
+
+        </div>
+
+    );
+
+}
+
 
 
 export default Home;

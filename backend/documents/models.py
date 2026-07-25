@@ -3,60 +3,111 @@ from accounts.models import User
 from accounts.models import EmployeeProfile
 
 
+
 class Document(models.Model):
 
-    title = models.CharField(max_length=200)
+
+    ACTION_CHOICES = (
+        ("UPLOAD", "Requires Upload"),
+        ("SIGNATURE", "Requires Signature"),
+        ("VIEW_ONLY", "View Only"),
+    )
+
+
+
+    title = models.CharField(
+        max_length=200
+    )
+
+
 
     category = models.CharField(
         max_length=100
     )
 
+
+
     job_type = models.CharField(
         max_length=100
     )
+
+
 
     version = models.CharField(
         max_length=20,
         default="1.0"
     )
 
+
+
     file = models.FileField(
         upload_to="documents/"
     )
+
+
+
+    action_type = models.CharField(
+        max_length=20,
+        choices=ACTION_CHOICES,
+        default="UPLOAD"
+    )
+
+
 
     uploaded_by = models.ForeignKey(
         User,
         on_delete=models.CASCADE
     )
 
+
+
     created_at = models.DateTimeField(
         auto_now_add=True
     )
 
 
+
+
     def __str__(self):
+
         return self.title
+
+
+
 
 
 
 
 class EmployeeDocument(models.Model):
 
+
     STATUS_CHOICES = (
-    ('PENDING', 'Pending'),
-    ('SUBMITTED', 'Submitted'),
-    ('APPROVED', 'Approved'),
-    ('REJECTED', 'Rejected'),
-)
+
+        ('PENDING', 'Pending'),
+
+        ('SUBMITTED', 'Submitted'),
+
+        ('APPROVED', 'Approved'),
+
+        ('REJECTED', 'Rejected'),
+
+    )
+
+
+
     employee = models.ForeignKey(
         EmployeeProfile,
         on_delete=models.CASCADE
     )
 
+
+
     document = models.ForeignKey(
         Document,
         on_delete=models.CASCADE
     )
+
+
 
     status = models.CharField(
         max_length=20,
@@ -64,21 +115,57 @@ class EmployeeDocument(models.Model):
         default='PENDING'
     )
 
+
+
     uploaded_file = models.FileField(
         upload_to="completed_documents/",
         blank=True,
         null=True
     )
 
+
+
+    # New: employee signature image
+
+    signature = models.ImageField(
+
+        upload_to="signatures/",
+
+        blank=True,
+
+        null=True
+
+    )
+
+
+
+    # New: when employee signed
+
+    signed_at = models.DateTimeField(
+
+        blank=True,
+
+        null=True
+
+    )
+
+
+
     submitted_at = models.DateTimeField(
         blank=True,
         null=True
     )
+
+
 
     created_at = models.DateTimeField(
         auto_now_add=True
     )
 
 
+
+
+
     def __str__(self):
+
         return f"{self.employee} - {self.document}"
