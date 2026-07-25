@@ -151,4 +151,5 @@ REST_FRAMEWORK = {
 }
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+    "https://employee-onboarding-gamma.vercel.app",
 ]
