@@ -322,15 +322,6 @@ http://localhost:5173/
 
 # Screenshots
 
-Add screenshots demonstrating:
-
-- Login page
-- Employee dashboard
-- HR dashboard
-- Document upload workflow
-- Digital signature page
-- Approval workflow
-
 ---
 
 # Learning Outcomes
