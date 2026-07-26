@@ -36,7 +36,6 @@ function Home() {
 
                     <div>
 
-
                         <h1
                             className="
                                 text-2xl
@@ -64,7 +63,6 @@ function Home() {
 
 
 
-
                     {/* Navigation */}
 
                     <div
@@ -74,7 +72,6 @@ function Home() {
                             gap-8
                         "
                     >
-
 
                         <Link
 
@@ -87,7 +84,7 @@ function Home() {
                             "
 
                         >
-                            Login
+                            Portal Login
 
                         </Link>
 
@@ -109,7 +106,7 @@ function Home() {
                             "
 
                         >
-                            Employee Access
+                            Employee Registration
 
                         </Link>
 
@@ -121,8 +118,6 @@ function Home() {
 
 
             </header>
-
-
 
 
 
@@ -147,7 +142,6 @@ function Home() {
 
 
                 {/* Left */}
-
 
                 <div>
 
@@ -233,40 +227,14 @@ function Home() {
 
 
 
-                        <Link
-
-                            to="/signup"
-
-                            className="
-                                border
-                                border-gray-300
-                                text-gray-700
-                                px-8
-                                py-3
-                                rounded-md
-                                hover:bg-white
-                            "
-
-                        >
-                            Create Account
-
-                        </Link>
+                        
 
 
                     </div>
 
 
                 </div>
-
-
-
-
-
-
-
-
-
-                {/* Portal Preview */}
+                    {/* Portal Preview */}
 
 
                 <div
@@ -317,13 +285,11 @@ function Home() {
 
 
 
-
                     <ChecklistItem
                         title="Offer Letter"
                         status="Completed"
                         color="text-green-700"
                     />
-
 
 
                     <ChecklistItem
@@ -333,12 +299,12 @@ function Home() {
                     />
 
 
-
                     <ChecklistItem
                         title="HR Review"
                         status="In Progress"
                         color="text-blue-700"
                     />
+
 
 
 
@@ -398,13 +364,154 @@ function Home() {
                     </div>
 
 
-
                 </div>
-
 
 
             </section>
 
+
+
+
+
+            {/* Demo Access */}
+
+
+            <section
+                className="
+                    max-w-7xl
+                    mx-auto
+                    px-8
+                    py-16
+                "
+            >
+
+                <div
+                    className="
+                        bg-white
+                        border
+                        border-gray-200
+                        p-8
+                    "
+                >
+
+
+                    <h2
+                        className="
+                            text-3xl
+                            font-bold
+                            text-[#12304A]
+                        "
+                    >
+                        Demo Access
+                    </h2>
+
+
+                    <p
+                        className="
+                            mt-3
+                            text-gray-600
+                        "
+                    >
+                        Explore the onboarding workflow using the demo accounts.
+                    </p>
+
+
+
+
+                    <div
+                        className="
+                            mt-8
+                            grid
+                            md:grid-cols-2
+                            gap-8
+                        "
+                    >
+
+
+
+                        <div
+                            className="
+                                border
+                                border-gray-200
+                                p-6
+                                bg-[#FAFAF8]
+                            "
+                        >
+
+                            <h3
+                                className="
+                                    text-xl
+                                    font-semibold
+                                    text-[#12304A]
+                                "
+                            >
+                                HR / Admin Account
+                            </h3>
+
+
+                            <p
+                                className="
+                                    mt-3
+                                    text-gray-600
+                                "
+                            >
+                                Manage employee documents,
+                                assignments, and approvals.
+                            </p>
+
+
+                            <div
+                                className="
+                                    mt-4
+                                    text-sm
+                                    text-gray-700
+                                "
+                            >
+
+                                <p>
+                                    Username: <strong>admin</strong>
+                                </p>
+
+                                <p>
+                                    Password: admin
+                                </p>
+
+
+                            </div>
+
+
+                        </div>
+
+
+
+
+
+
+                       
+
+
+
+                    </div>
+
+
+
+                    <p
+                        className="
+                            mt-6
+                            text-sm
+                            text-gray-500
+                        "
+                    >
+                        HR and administrative accounts are created internally
+                        and are not available through public registration.
+                    </p>
+
+
+
+                </div>
+
+
+            </section>
 
 
 
@@ -650,6 +757,7 @@ function FeatureCard({title,text}) {
     );
 
 }
+
 
 
 
