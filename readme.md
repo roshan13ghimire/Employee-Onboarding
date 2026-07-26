@@ -46,7 +46,6 @@ HR/Admin:
 
 ## Future Improvements
 
-- Digital signature integration
 - Email verification and notifications
 - Advanced role permissions
 - Training completion tracking
