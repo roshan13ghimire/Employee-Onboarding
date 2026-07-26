@@ -1,68 +1,55 @@
 # Employee Onboarding Portal
 
-A full-stack employee onboarding system designed to simplify the process of managing employee documents, submissions, and approvals.
-
-The application provides a centralized platform where HR teams can upload onboarding documents, assign them to employees, and track completion progress. Employees can securely access their documents, upload completed forms, and digitally sign required documents.
-
-## Live Demo
-
-Frontend:
-https://employee-onboarding-gamma.vercel.app/
-
-Backend API:
-https://employee-onboarding-backend-traj.onrender.com/
-
-Django Admin:
-https://employee-onboarding-backend-traj.onrender.com/admin/
+A full-stack employee onboarding system designed to manage employee documents, onboarding tasks, and HR workflows.
 
 ## Features
 
-### HR/Admin
-- Secure authentication with role-based access
-- Upload and manage onboarding documents
-- Assign documents to employees
-- Track document completion status
-- Review and approve/reject submitted documents
-
-### Employee
-- Secure login
-- View assigned onboarding documents
-- Upload completed documents
-- Digitally sign documents using a signature canvas
-- Track onboarding progress
-
-## Document Actions
-
-Each document can have different completion requirements:
-
-- UPLOAD: Employee uploads the completed document
-- SIGNATURE: Employee signs the document digitally
-- VIEW_ONLY: Employee only views the document
+- Role-based authentication (HR/Admin and Employee)
+- Employee document management
+- Document assignment and submission tracking
+- HR approval workflow
+- Employee onboarding progress tracking
+- Secure PostgreSQL database integration
 
 ## Tech Stack
 
-### Backend
-- Python
+**Frontend**
+- React
+- Tailwind CSS
+- Axios
+
+**Backend**
 - Django
 - Django REST Framework
 - PostgreSQL
 - JWT Authentication
-- Supabase PostgreSQL Database
 
-### Frontend
-- React
-- React Router
-- Axios
-- Tailwind CSS
+## Live Demo
 
-## Deployment
+Frontend:
+https://employee-onboarding-gamma.vercel.app
 
-The application is deployed using:
+Backend API:
+https://employee-onboarding-backend-traj.onrender.com
 
-- Frontend: Vercel
-- Backend: Render
-- Database: Supabase PostgreSQL
+## Repository
+
+GitHub:
+https://github.com/roshan13ghimire/Employee-Onboarding
+
+## Demo Accounts
+
+HR/Admin:
+- Username: admin
+- Password: admin
+
+
+## Future Improvements
+
+- Digital signature integration
+- Email verification and notifications
+- Advanced role permissions
+- Training completion tracking
+- Improved document workflows
 
 ## Screenshots
-
-Stay tuned for screenshots.
