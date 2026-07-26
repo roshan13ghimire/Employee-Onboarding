@@ -53,3 +53,27 @@ HR/Admin:
 - Improved document workflows
 
 ## Screenshots
+
+### Home Page
+
+![Home Page](screenshots/home.png)
+
+
+### HR Dashboard
+
+![HR Dashboard](screenshots/hr-dashboard.png)
+![HR Dashboard](screenshots/hr-dashboard1.png)
+![HR Dashboard](screenshots/hr-dashboard2.png)
+
+
+### Employee Dashboard
+
+![Employee Dashboard](screenshots/dashboard.png)
+
+### Document Library
+
+![Document Library](screenshots/document-library.png)
+
+### Digital Signature
+
+![Digital Signature](screenshots/digital-signature.png)
