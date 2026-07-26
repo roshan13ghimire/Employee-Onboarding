@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
 import { useNavigate } from "react-router-dom";
+import { backendURL } from "../services/api";
 
 
 function HRDashboard() {
@@ -388,7 +389,7 @@ return (
 
                 <a
 
-                href={`http://127.0.0.1:8000${doc.uploaded_file}`}
+                href={`${backendURL}${doc.uploaded_file}`}
 
                 target="_blank"
 
