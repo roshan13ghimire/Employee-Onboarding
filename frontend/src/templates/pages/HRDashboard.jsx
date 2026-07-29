@@ -3,6 +3,7 @@ import api from "../services/api";
 import { useNavigate } from "react-router-dom";
 import { backendURL } from "../services/api";
 import AnalyticsCard from "../components/dashboard/AnalyticsCard";
+import { toast } from "react-toastify";
 
 
 function HRDashboard() {
@@ -14,6 +15,13 @@ function HRDashboard() {
     const [documents, setDocuments] = useState([]);
 
     const [stats, setStats] = useState(null);
+
+
+    const [selectedDocument, setSelectedDocument] = useState(null);
+
+    const [rejectReason, setRejectReason] = useState("");
+
+
 
 
 
@@ -38,6 +46,7 @@ function HRDashboard() {
         }
 
     };
+
 
 
 
@@ -74,7 +83,12 @@ function HRDashboard() {
 
 
 
-    const updateStatus = async (id, action) => {
+    const updateStatus = async (
+        id,
+        action,
+        reason=""
+    ) => {
+
 
         try {
 
@@ -84,10 +98,18 @@ function HRDashboard() {
                 `/hr-documents/${id}/status/`,
 
                 {
-                    action: action
+                    action: action,
+                    reason: reason
                 }
 
             );
+
+
+
+            toast.success(
+                "Document status updated"
+            );
+
 
 
             fetchDocuments();
@@ -95,9 +117,17 @@ function HRDashboard() {
             fetchDashboardStats();
 
 
+
         } catch(error) {
 
+
             console.log(error);
+
+
+            toast.error(
+                "Unable to update document status"
+            );
+
 
         }
 
@@ -196,7 +226,6 @@ function HRDashboard() {
                         py-3
                         rounded-lg
                         hover:bg-[#1c4665]
-                        transition
                     "
 
                 >
@@ -227,85 +256,39 @@ function HRDashboard() {
             ">
 
 
-
                 <AnalyticsCard
-
                     title="Total Employees"
-
-                    value={
-                        stats?.total_employees || 0
-                    }
-
+                    value={stats?.total_employees || 0}
                 />
 
 
-
-
-
                 <AnalyticsCard
-
                     title="Completed"
-
-                    value={
-                        stats?.completed_employees || 0
-                    }
-
+                    value={stats?.completed_employees || 0}
                 />
 
 
-
-
-
                 <AnalyticsCard
-
                     title="In Progress"
-
-                    value={
-                        stats?.in_progress_employees || 0
-                    }
-
+                    value={stats?.in_progress_employees || 0}
                 />
 
 
-
-
-
                 <AnalyticsCard
-
                     title="Not Started"
-
-                    value={
-                        stats?.not_started_employees || 0
-                    }
-
+                    value={stats?.not_started_employees || 0}
                 />
 
 
-
-
-
                 <AnalyticsCard
-
                     title="Pending Reviews"
-
-                    value={
-                        stats?.pending_reviews || 0
-                    }
-
+                    value={stats?.pending_reviews || 0}
                 />
 
 
-
-
-
                 <AnalyticsCard
-
                     title="Approved Documents"
-
-                    value={
-                        stats?.approved_documents || 0
-                    }
-
+                    value={stats?.approved_documents || 0}
                 />
 
 
@@ -322,9 +305,7 @@ function HRDashboard() {
             {/* Document Reviews */}
 
 
-
             <div>
-
 
 
                 <h2 className="
@@ -357,12 +338,9 @@ function HRDashboard() {
                         text-gray-500
                     ">
 
-
                         No documents waiting.
 
-
                     </div>
-
 
 
                     :
@@ -383,10 +361,10 @@ function HRDashboard() {
                                 rounded-xl
                                 p-6
                                 hover:shadow-md
-                                transition
                             "
 
                         >
+
 
 
 
@@ -406,12 +384,9 @@ function HRDashboard() {
                                         font-semibold
                                     ">
 
-
                                         {doc.document_title}
 
-
                                     </h3>
-
 
 
 
@@ -426,9 +401,7 @@ function HRDashboard() {
 
                                         </span>
 
-
                                     </p>
-
 
 
 
@@ -436,9 +409,7 @@ function HRDashboard() {
                                     <p className="text-gray-600">
 
                                         Department:
-
                                         {" "}
-
                                         {doc.department}
 
                                     </p>
@@ -446,17 +417,13 @@ function HRDashboard() {
 
 
 
-
                                     <p className="text-gray-600">
 
                                         Position:
-
                                         {" "}
-
                                         {doc.job_title}
 
                                     </p>
-
 
 
                                 </div>
@@ -475,17 +442,12 @@ function HRDashboard() {
                                     text-blue-700
                                 ">
 
-
                                     {doc.status}
-
 
                                 </span>
 
 
-
                             </div>
-
-
 
 
 
@@ -499,13 +461,11 @@ function HRDashboard() {
 
                                 <a
 
-
                                     href={`${backendURL}${doc.uploaded_file}`}
 
                                     target="_blank"
 
                                     rel="noreferrer"
-
 
                                     className="
                                         inline-block
@@ -530,10 +490,8 @@ function HRDashboard() {
 
 
 
-
                             {
                                 doc.status === "SUBMITTED" &&
-
 
 
                                 <div className="
@@ -545,7 +503,6 @@ function HRDashboard() {
 
 
                                     <button
-
 
                                         onClick={() =>
                                             updateStatus(
@@ -563,7 +520,6 @@ function HRDashboard() {
                                             rounded-lg
                                         "
 
-
                                     >
 
                                         Approve
@@ -574,18 +530,13 @@ function HRDashboard() {
 
 
 
-
-
                                     <button
 
-
                                         onClick={() =>
-                                            updateStatus(
-                                                doc.id,
-                                                "REJECT"
+                                            setSelectedDocument(
+                                                doc.id
                                             )
                                         }
-
 
 
                                         className="
@@ -595,7 +546,6 @@ function HRDashboard() {
                                             py-2
                                             rounded-lg
                                         "
-
 
                                     >
 
@@ -608,10 +558,7 @@ function HRDashboard() {
                                 </div>
 
 
-
                             }
-
-
 
 
 
@@ -637,6 +584,179 @@ function HRDashboard() {
 
 
 
+
+
+
+
+            {/* Reject Modal */}
+
+
+
+            {
+                selectedDocument &&
+
+
+                <div className="
+                    fixed
+                    inset-0
+                    bg-black
+                    bg-opacity-40
+                    flex
+                    items-center
+                    justify-center
+                    z-50
+                ">
+
+
+                    <div className="
+                        bg-white
+                        rounded-xl
+                        p-6
+                        w-full
+                        max-w-md
+                    ">
+
+
+                        <h2 className="
+                            text-xl
+                            font-semibold
+                            mb-4
+                        ">
+
+                            Reject Document
+
+                        </h2>
+
+
+
+                        <textarea
+
+                            value={rejectReason}
+
+                            onChange={
+                                e =>
+                                setRejectReason(
+                                    e.target.value
+                                )
+                            }
+
+
+                            placeholder="Enter rejection reason"
+
+                            className="
+                                w-full
+                                border
+                                rounded-lg
+                                p-3
+                                h-32
+                            "
+
+                        />
+
+
+
+
+
+                        <div className="
+                            flex
+                            justify-end
+                            gap-3
+                            mt-5
+                        ">
+
+
+
+                            <button
+
+                                onClick={() => {
+
+                                    setSelectedDocument(null);
+
+                                    setRejectReason("");
+
+                                }}
+
+                                className="
+                                    border
+                                    px-4
+                                    py-2
+                                    rounded-lg
+                                "
+
+                            >
+
+                                Cancel
+
+                            </button>
+
+
+
+
+
+                            <button
+
+                                onClick={() => {
+
+
+                                    if(!rejectReason.trim()){
+
+                                        toast.error(
+                                            "Please enter rejection reason"
+                                        );
+
+                                        return;
+
+                                    }
+
+
+
+                                    updateStatus(
+
+                                        selectedDocument,
+
+                                        "REJECT",
+
+                                        rejectReason
+
+                                    );
+
+
+
+                                    setSelectedDocument(null);
+
+                                    setRejectReason("");
+
+
+                                }}
+
+
+                                className="
+                                    bg-red-700
+                                    text-white
+                                    px-4
+                                    py-2
+                                    rounded-lg
+                                "
+
+                            >
+
+                                Confirm Reject
+
+                            </button>
+
+
+
+                        </div>
+
+
+
+                    </div>
+
+
+                </div>
+
+
+            }
 
 
 

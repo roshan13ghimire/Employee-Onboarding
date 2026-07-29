@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
+import { toast } from "react-toastify";
 
 
 function AssignDocument() {
@@ -13,7 +14,6 @@ function AssignDocument() {
     const [documentId, setDocumentId] = useState("");
 
 
-    const [message, setMessage] = useState("");
 
 
 
@@ -51,10 +51,16 @@ function AssignDocument() {
             console.log(error);
 
 
+            toast.error(
+                "Unable to load data."
+            );
+
+
         }
 
 
     };
+
 
 
 
@@ -72,13 +78,15 @@ function AssignDocument() {
 
 
 
+
+
     const assignDocument = async () => {
 
 
         if(!employeeId || !documentId) {
 
 
-            setMessage(
+            toast.warning(
                 "Please select employee and document."
             );
 
@@ -86,6 +94,7 @@ function AssignDocument() {
             return;
 
         }
+
 
 
 
@@ -105,13 +114,14 @@ function AssignDocument() {
 
 
 
-            setMessage(
+            toast.success(
                 "Document assigned successfully."
             );
 
 
 
             setEmployeeId("");
+
             setDocumentId("");
 
 
@@ -122,7 +132,7 @@ function AssignDocument() {
             console.log(error);
 
 
-            setMessage(
+            toast.error(
                 "Unable to assign document."
             );
 
@@ -137,10 +147,14 @@ function AssignDocument() {
 
 
 
+
+
+
     return (
 
 
         <div className="space-y-8">
+
 
 
 
@@ -187,6 +201,7 @@ function AssignDocument() {
 
 
 
+
             {/* Form Card */}
 
 
@@ -202,8 +217,10 @@ function AssignDocument() {
 
 
 
-
                 <div className="space-y-6">
+
+
+
 
 
 
@@ -396,6 +413,7 @@ function AssignDocument() {
 
 
 
+
                     {/* Button */}
 
 
@@ -427,40 +445,16 @@ function AssignDocument() {
 
 
 
-
-
-                    {
-                        message &&
-
-
-                        <div
-
-                            className="
-                                bg-gray-100
-                                border
-                                rounded-lg
-                                p-4
-                                text-gray-700
-                            "
-
-                        >
-
-                            {message}
-
-                        </div>
-
-
-                    }
-
-
-
-
-
                 </div>
 
 
 
             </div>
+
+
+
+
+
 
 
 

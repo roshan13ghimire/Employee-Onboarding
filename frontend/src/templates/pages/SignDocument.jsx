@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import SignatureCanvas from "react-signature-canvas";
 import api from "../services/api";
+import { toast } from "react-toastify";
 
 
 function SignDocument() {
@@ -29,9 +30,9 @@ function SignDocument() {
 
         if(signatureRef.current.isEmpty()) {
 
-            alert(
-                "Please provide your signature"
-            );
+     toast.error(
+        "Please provide a signature before submitting."
+    );
 
             return;
 
@@ -64,9 +65,9 @@ function SignDocument() {
 
 
 
-            alert(
-                "Document signed successfully"
-            );
+            toast.success(
+    "Document signed successfully"
+);
 
 
 
@@ -80,9 +81,9 @@ function SignDocument() {
             console.log(error.response);
 
 
-            alert(
-                "Signature failed"
-            );
+    toast.error(
+        "Unable to sign document"
+    );
 
 
         }

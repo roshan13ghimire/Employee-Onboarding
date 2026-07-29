@@ -119,7 +119,8 @@ class UploadDocumentAPIView(APIView):
     def post(self, request, id):
 
 
-        employee = EmployeeProfile.objects.get(
+        employee = get_object_or_404(
+            EmployeeProfile,
             user=request.user
         )
 
@@ -134,6 +135,25 @@ class UploadDocumentAPIView(APIView):
             employee=employee
 
         )
+
+
+
+        if employee_document.status not in [
+            "PENDING",
+            "REJECTED"
+        ]:
+
+            return Response(
+
+                {
+                    "error":
+                    "This document cannot be uploaded again."
+                },
+
+                status=status.HTTP_400_BAD_REQUEST
+
+            )
+
 
 
 
@@ -159,7 +179,9 @@ class UploadDocumentAPIView(APIView):
 
             status="SUBMITTED",
 
-            submitted_at=timezone.now()
+            submitted_at=timezone.now(),
+
+            rejection_reason=None
 
         )
 
@@ -175,7 +197,6 @@ class UploadDocumentAPIView(APIView):
             status=status.HTTP_200_OK
 
         )
-
 
 
 
@@ -331,7 +352,6 @@ class HRDocumentStatusAPIView(APIView):
     ]
 
 
-
     def post(self, request, id):
 
 
@@ -350,6 +370,11 @@ class HRDocumentStatusAPIView(APIView):
         )
 
 
+        reason = request.data.get(
+            "reason"
+        )
+
+
 
         if action == "APPROVE":
 
@@ -357,11 +382,38 @@ class HRDocumentStatusAPIView(APIView):
             document.status = "APPROVED"
 
 
+            # Clear old rejection reason if approved later
+
+            document.rejection_reason = None
+
+
+
 
         elif action == "REJECT":
 
 
+
+            if not reason:
+
+
+                return Response(
+
+                    {
+                        "error":
+                        "Rejection reason is required"
+                    },
+
+                    status=400
+
+                )
+
+
+
             document.status = "REJECTED"
+
+
+            document.rejection_reason = reason
+
 
 
 
@@ -381,6 +433,8 @@ class HRDocumentStatusAPIView(APIView):
 
 
 
+
+
         document.save()
 
 
@@ -391,8 +445,14 @@ class HRDocumentStatusAPIView(APIView):
                 "message":
                 "Status updated",
 
+
                 "status":
-                document.status
+                document.status,
+
+
+                "rejection_reason":
+                document.rejection_reason
+
             }
 
         )

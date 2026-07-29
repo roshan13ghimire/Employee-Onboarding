@@ -148,6 +148,10 @@ class EmployeeDocument(models.Model):
         null=True
 
     )
+    rejection_reason = models.TextField(
+        blank=True,
+        null=True
+    )
 
 
 
@@ -161,6 +165,7 @@ class EmployeeDocument(models.Model):
     created_at = models.DateTimeField(
         auto_now_add=True
     )
+  
 
 
 

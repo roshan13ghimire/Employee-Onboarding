@@ -243,6 +243,8 @@ class HRDocumentSerializer(serializers.ModelSerializer):
 
             "submitted_at",
 
+            "rejection_reason",
+
         ]
 
 

@@ -3,6 +3,7 @@ import api from "../services/api";
 import { useNavigate } from "react-router-dom";
 import Card from "../components/Card";
 import Button from "../components/Button";
+import { toast } from "react-toastify";
 
 
 function Dashboard() {
@@ -104,6 +105,9 @@ function Dashboard() {
                 }
 
             );
+            toast.success(
+    "Document submitted successfully"
+);
 
 
             fetchDocuments();
@@ -111,14 +115,13 @@ function Dashboard() {
 
         } catch(error) {
 
+    console.log(error);
 
-            console.log(error);
+    toast.error(
+        "Upload failed"
+    );
 
-            alert(
-                "Upload failed"
-            );
-
-        }
+}
 
     };
 
@@ -559,85 +562,143 @@ function Dashboard() {
 
 
 
-                            <div className="mt-3">
+                           <div className="mt-3">
 
-                                Status:
+    Status:
 
-                                <StatusBadge
+    <StatusBadge
 
-                                    status={doc.status}
+        status={doc.status}
 
-                                />
+    />
 
-                            </div>
-
-
+</div>
 
 
 
-                            {
-                                doc.status === "PENDING" &&
-                                doc.action_type === "UPLOAD" &&
+{
+    doc.status === "REJECTED" &&
+    doc.rejection_reason &&
+
+    <div
+        className="
+            mt-4
+            bg-red-50
+            border
+            border-red-200
+            p-4
+            rounded-lg
+        "
+    >
+
+        <p
+            className="
+                text-sm
+                font-semibold
+                text-red-700
+            "
+        >
+            Rejection Reason
+        </p>
 
 
-                                <input
+        <p
+            className="
+                text-red-600
+                mt-1
+            "
+        >
 
-                                    type="file"
+            {doc.rejection_reason}
 
-                                    onChange={
-                                        e =>
-                                        uploadDocument(
-                                            doc.id,
-                                            e.target.files[0]
-                                        )
-                                    }
-
-                                    className="mt-5"
-
-                                />
-
-                            }
+        </p>
 
 
-
-
-
-                            {
-                                doc.document_file &&
-
-
-                                <a
-
-                                    href={doc.document_file}
-
-                                    target="_blank"
-
-                                    rel="noreferrer"
-
-                                    className="
-                                        inline-block
-                                        mt-5
-                                        border
-                                        border-[#12304A]
-                                        text-[#12304A]
-                                        px-5
-                                        py-2
-                                        rounded-lg
-                                    "
-
-                                >
-
-                                    View Document
-
-                                </a>
-
-                            }
+    </div>
+}
 
 
 
 
-                            {
-    doc.status === "PENDING" &&
+
+{
+    (
+        doc.status === "PENDING" ||
+        doc.status === "REJECTED"
+    )
+
+    &&
+
+    doc.action_type === "UPLOAD" &&
+
+
+    <input
+
+        type="file"
+
+        onChange={
+            e =>
+            uploadDocument(
+                doc.id,
+                e.target.files[0]
+            )
+        }
+
+        className="mt-5"
+
+    />
+
+}
+
+
+
+
+
+
+
+{
+    doc.document_file &&
+
+
+    <a
+
+        href={doc.document_file}
+
+        target="_blank"
+
+        rel="noreferrer"
+
+        className="
+            inline-block
+            mt-5
+            border
+            border-[#12304A]
+            text-[#12304A]
+            px-5
+            py-2
+            rounded-lg
+        "
+
+    >
+
+        View Document
+
+    </a>
+
+}
+
+
+
+
+
+
+
+{
+    (
+        doc.status === "PENDING" ||
+        doc.status === "REJECTED"
+    )
+    &&
     doc.action_type === "SIGNATURE" &&
 
 
@@ -653,7 +714,13 @@ function Dashboard() {
 
     >
 
-        Sign Document
+        {
+            doc.status === "REJECTED"
+            ?
+            "Resign Document"
+            :
+            "Sign Document"
+        }
 
     </Button>
 
