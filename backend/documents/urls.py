@@ -8,7 +8,9 @@ from .views import (
     HRDocumentStatusAPIView,
     HRDocumentsAPIView,
     CreateDocumentAPIView,
-    SignDocumentAPIView
+    SignDocumentAPIView,
+    EmployeeDocumentsAPIView,
+    EmployeeProgressAPIView
 )
 
 
@@ -61,5 +63,13 @@ urlpatterns = [
         "assign-document/",
         AssignDocumentAPIView.as_view()
     ),
+    path(
+    "employees/<int:id>/documents/",
+    EmployeeDocumentsAPIView.as_view()
+),
+path(
+    "employees/<int:id>/progress/",
+    EmployeeProgressAPIView.as_view()
+),
 
 ]

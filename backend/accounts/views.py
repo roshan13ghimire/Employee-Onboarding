@@ -8,6 +8,7 @@ from .models import EmployeeProfile
 from .serializers import EmployeeListSerializer
 
 from .serializers import SignupSerializer
+from .serializers import EmployeeDetailSerializer
 
 class SignupAPIView(APIView):
 
@@ -93,4 +94,39 @@ class ProfileAPIView(APIView):
                 "job_title":
                     profile.job_title if profile else None,
             }
+        )
+
+class EmployeeDetailAPIView(APIView):
+
+    permission_classes = [
+        IsAuthenticated,
+        IsHRUser
+    ]
+
+
+    def get(self, request, id):
+
+        try:
+
+            employee = EmployeeProfile.objects.get(
+                id=id
+            )
+
+        except EmployeeProfile.DoesNotExist:
+
+            return Response(
+                {
+                    "error": "Employee not found"
+                },
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+
+        serializer = EmployeeDetailSerializer(
+            employee
+        )
+
+
+        return Response(
+            serializer.data
         )

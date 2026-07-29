@@ -19,7 +19,8 @@ from .serializers import (
     HRDocumentStatusSerializer,
     AssignDocumentSerializer,
     HRDocumentSerializer,
-    CreateDocumentSerializer
+    CreateDocumentSerializer,
+    EmployeeProfileDocumentSerializer
 )
 
 from accounts.models import EmployeeProfile
@@ -567,5 +568,140 @@ class AssignDocumentAPIView(APIView):
             },
 
             status=201
+
+        )
+class EmployeeDocumentsAPIView(APIView):
+
+
+    permission_classes = [
+        IsAuthenticated,
+        IsHRUser
+    ]
+
+
+
+    def get(self, request, id):
+
+
+        employee = get_object_or_404(
+
+            EmployeeProfile,
+
+            id=id
+
+        )
+
+
+        documents = EmployeeDocument.objects.filter(
+
+            employee=employee
+
+        )
+
+
+        serializer = EmployeeProfileDocumentSerializer(
+
+            documents,
+
+            many=True
+
+        )
+
+
+        return Response(
+
+            serializer.data
+
+        )
+class EmployeeProgressAPIView(APIView):
+
+
+    permission_classes = [
+        IsAuthenticated,
+        IsHRUser
+    ]
+
+
+
+    def get(self, request, id):
+
+
+        employee = get_object_or_404(
+
+            EmployeeProfile,
+
+            id=id
+
+        )
+
+
+
+        documents = EmployeeDocument.objects.filter(
+
+            employee=employee
+
+        )
+
+
+
+        total_documents = documents.count()
+
+
+
+        completed_documents = documents.filter(
+
+            status="APPROVED"
+
+        ).count()
+
+
+
+
+
+        if total_documents == 0:
+
+            progress = 0
+
+        else:
+
+            progress = round(
+
+                (completed_documents / total_documents) * 100
+
+            )
+
+
+
+
+
+        if progress == 100:
+
+            onboarding_status = "COMPLETED"
+
+
+        elif progress > 0:
+
+            onboarding_status = "IN_PROGRESS"
+
+
+        else:
+
+            onboarding_status = "NOT_STARTED"
+
+
+
+
+
+        return Response(
+
+            {
+                "total_documents": total_documents,
+
+                "completed_documents": completed_documents,
+
+                "progress": progress,
+
+                "status": onboarding_status
+            }
 
         )

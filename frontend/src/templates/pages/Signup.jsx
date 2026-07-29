@@ -1,6 +1,7 @@
 import { useState } from "react";
 import api from "../services/api";
 import { useNavigate, Link } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 
 function Signup() {
@@ -9,17 +10,25 @@ function Signup() {
     const navigate = useNavigate();
 
 
+    const [showPassword, setShowPassword] = useState(false);
+
+    const [loading, setLoading] = useState(false);
+
+
 
     const [formData, setFormData] = useState({
 
         username: "",
         email: "",
         password: "",
+        confirmPassword: "",
         employee_id: "",
         department: "",
         job_title: ""
 
     });
+
+
 
 
 
@@ -44,47 +53,166 @@ function Signup() {
 
 
 
+
+
+
+    const validatePassword = (password) => {
+
+
+        const regex =
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{6,}$/;
+
+
+        return regex.test(password);
+
+
+    };
+
+
+
+
+
+
+
+
+
     const handleSubmit = async (e) => {
 
 
         e.preventDefault();
 
 
+
+        if(
+            formData.password !== 
+            formData.confirmPassword
+        ){
+
+            toast.error(
+                "Passwords do not match"
+            );
+
+            return;
+
+        }
+
+
+
+
+
+        if(
+            !validatePassword(
+                formData.password
+            )
+        ){
+
+            toast.error(
+                "Password must contain uppercase, lowercase, number, special character and minimum 6 characters"
+            );
+
+            return;
+
+        }
+
+
+
+
+
+
+        setLoading(true);
+
+
+
+
         try {
 
 
             await api.post(
+
                 "/signup/",
-                formData
+
+                {
+
+                    username:
+                    formData.username,
+
+
+                    email:
+                    formData.email,
+
+
+                    password:
+                    formData.password,
+
+
+                    employee_id:
+                    formData.employee_id,
+
+
+                    department:
+                    formData.department,
+
+
+                    job_title:
+                    formData.job_title
+
+                }
+
             );
 
 
 
-            alert(
+
+            toast.success(
                 "Account created successfully"
             );
 
 
-            navigate("/login");
+
+            setTimeout(() => {
+
+                navigate("/login");
+
+            },1000);
 
 
 
-        } catch(error) {
+
+
+        }
+
+        catch(error){
 
 
             console.log(error.response);
-            
 
 
-            alert(
+
+            toast.error(
+
+                error.response?.data?.username?.[0]
+                ||
                 "Signup failed"
+
             );
 
 
         }
 
 
+        finally {
+
+            setLoading(false);
+
+        }
+
+
+
     };
+
+
+
+
 
 
 
@@ -97,21 +225,119 @@ function Signup() {
         <div
             className="
                 min-h-screen
-                bg-[#FAFAF8]
+                bg-slate-50
                 flex
-                items-center
-                justify-center
-                px-6
-                py-10
             "
         >
+
+
+
+
+
+            {/* LEFT SIDE */}
+
+
+
+            <div
+                className="
+                    hidden
+                    lg:flex
+                    lg:w-1/2
+                    bg-blue-900
+                    text-white
+                    flex-col
+                    justify-center
+                    px-16
+                "
+            >
+
+
+
+                <h1
+                    className="
+                        text-5xl
+                        font-bold
+                        leading-tight
+                    "
+                >
+
+                    Start Your
+                    <br/>
+                    Employee Journey
+
+                </h1>
+
+
+
+
+
+                <p
+                    className="
+                        mt-6
+                        text-lg
+                        text-blue-100
+                        max-w-md
+                    "
+                >
+
+                    Create your employee profile
+                    and access onboarding documents,
+                    tasks, and HR resources securely.
+
+                </p>
+
+
+
+
+
+
+
+                <div
+                    className="
+                        mt-10
+                        space-y-5
+                    "
+                >
+
+
+                    <Feature text="Secure employee account"/>
+
+                    <Feature text="Digital onboarding workflow"/>
+
+                    <Feature text="Document management"/>
+
+                    <Feature text="HR collaboration"/>
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+
+
+
+
+
+
+            {/* RIGHT SIDE */}
+
+
 
 
 
             <div
                 className="
                     w-full
-                    max-w-lg
+                    lg:w-1/2
+                    flex
+                    justify-center
+                    items-center
+                    px-6
+                    py-10
                 "
             >
 
@@ -119,82 +345,50 @@ function Signup() {
 
 
 
-                {/* Branding */}
-
-
                 <div
                     className="
-                        text-center
-                        mb-8
-                    "
-                >
-
-                    <h1
-                        className="
-                            text-3xl
-                            font-bold
-                            text-[#12304A]
-                        "
-                    >
-                        School Board
-                    </h1>
-
-
-                    <p
-                        className="
-                            text-gray-500
-                            mt-2
-                        "
-                    >
-                        Employee Onboarding Portal
-                    </p>
-
-
-                </div>
-
-
-
-
-
-
-
-
-                {/* Signup Card */}
-
-
-                <div
-                    className="
+                        w-full
+                        max-w-lg
                         bg-white
+                        rounded-2xl
+                        shadow-xl
                         border
-                        border-gray-200
-                        shadow-sm
+                        border-slate-200
                         p-8
                     "
                 >
 
 
 
+
+
                     <h2
                         className="
-                            text-2xl
-                            font-semibold
-                            text-[#12304A]
+                            text-3xl
+                            font-bold
+                            text-slate-900
                         "
                     >
-                        Create Employee Account
+
+                        Create Account
+
                     </h2>
+
 
 
 
                     <p
                         className="
                             mt-2
-                            text-gray-600
                             mb-8
+                            text-slate-500
                         "
                     >
-                        Enter your employee information to register.
+
+                        Register as an employee
+
                     </p>
+
 
 
 
@@ -203,11 +397,15 @@ function Signup() {
 
 
                     <form
+
                         onSubmit={handleSubmit}
+
                         className="
                             space-y-5
                         "
+
                     >
+
 
 
 
@@ -231,11 +429,14 @@ function Signup() {
 
 
 
+
                         <InputField
 
                             label="Email Address"
 
                             name="email"
+
+                            type="email"
 
                             placeholder="Enter email"
 
@@ -250,21 +451,149 @@ function Signup() {
 
 
 
+
+
+
+                        <div>
+
+
+                            <label className="
+                                block
+                                text-sm
+                                font-medium
+                                mb-2
+                            ">
+
+                                Password
+
+                            </label>
+
+
+
+                            <div className="relative">
+
+
+                                <input
+
+                                    type={
+                                        showPassword
+                                        ?
+                                        "text"
+                                        :
+                                        "password"
+                                    }
+
+
+                                    name="password"
+
+
+                                    value={
+                                        formData.password
+                                    }
+
+
+                                    onChange={
+                                        handleChange
+                                    }
+
+
+                                    placeholder="Create password"
+
+
+                                    className="
+                                        w-full
+                                        border
+                                        rounded-lg
+                                        px-4
+                                        py-3
+                                        pr-20
+                                        focus:ring-2
+                                        focus:ring-blue-600
+                                    "
+
+                                />
+
+
+
+                                <button
+
+                                    type="button"
+
+                                    onClick={() =>
+                                    setShowPassword(
+                                        !showPassword
+                                    )}
+
+                                    className="
+                                        absolute
+                                        right-4
+                                        top-3
+                                        text-blue-700
+                                    "
+
+                                >
+
+                                    {
+                                        showPassword
+                                        ?
+                                        "Hide"
+                                        :
+                                        "Show"
+                                    }
+
+                                </button>
+
+
+                            </div>
+
+
+
+
+
+                            <p
+                                className="
+                                    text-xs
+                                    text-slate-500
+                                    mt-2
+                                "
+                            >
+
+                                Minimum 6 characters,
+                                one uppercase,
+                                one lowercase,
+                                one number,
+                                one special character.
+
+                            </p>
+
+
+                        </div>
+
+
+
+
+
+
+
+
+
                         <InputField
 
-                            label="Password"
+                            label="Confirm Password"
 
-                            name="password"
+                            name="confirmPassword"
 
                             type="password"
 
-                            placeholder="Create password"
+                            placeholder="Confirm password"
 
-                            value={formData.password}
+                            value={formData.confirmPassword}
 
                             onChange={handleChange}
 
                         />
+
+
 
 
 
@@ -279,6 +608,7 @@ function Signup() {
                                 gap-4
                             "
                         >
+
 
 
                             <InputField
@@ -297,6 +627,8 @@ function Signup() {
 
 
 
+
+
                             <InputField
 
                                 label="Department"
@@ -312,7 +644,10 @@ function Signup() {
                             />
 
 
+
                         </div>
+
+
 
 
 
@@ -326,7 +661,7 @@ function Signup() {
 
                             name="job_title"
 
-                            placeholder="Job title"
+                            placeholder="Job Title"
 
                             value={formData.job_title}
 
@@ -341,21 +676,33 @@ function Signup() {
 
 
 
+
                         <button
+
+                            disabled={loading}
 
                             className="
                                 w-full
-                                bg-[#12304A]
+                                bg-blue-700
+                                hover:bg-blue-800
                                 text-white
                                 py-3
-                                font-medium
-                                hover:bg-[#0D2438]
+                                rounded-lg
+                                font-semibold
                                 transition
+                                disabled:opacity-50
                             "
 
                         >
 
-                            Create Account
+                            {
+                                loading
+                                ?
+                                "Creating Account..."
+                                :
+                                "Create Account"
+                            }
+
 
                         </button>
 
@@ -372,14 +719,12 @@ function Signup() {
 
 
 
-                    <div
+                    <p
                         className="
                             mt-8
-                            border-t
-                            pt-5
                             text-center
                             text-sm
-                            text-gray-600
+                            text-slate-600
                         "
                     >
 
@@ -392,9 +737,8 @@ function Signup() {
 
                             className="
                                 ml-2
-                                text-[#12304A]
-                                font-medium
-                                hover:underline
+                                text-blue-700
+                                font-semibold
                             "
 
                         >
@@ -404,7 +748,7 @@ function Signup() {
                         </Link>
 
 
-                    </div>
+                    </p>
 
 
 
@@ -415,27 +759,9 @@ function Signup() {
 
 
 
-
-
-
-                <p
-                    className="
-                        text-center
-                        text-sm
-                        text-gray-500
-                        mt-6
-                    "
-                >
-
-                    For account assistance, contact Human Resources.
-
-                </p>
-
-
-
-
-
             </div>
+
+
 
 
 
@@ -477,7 +803,7 @@ function InputField({
                     block
                     text-sm
                     font-medium
-                    text-gray-700
+                    text-slate-700
                     mb-2
                 "
 
@@ -486,6 +812,7 @@ function InputField({
                 {label}
 
             </label>
+
 
 
 
@@ -505,12 +832,15 @@ function InputField({
                 className="
                     w-full
                     border
-                    border-gray-300
+                    rounded-lg
                     px-4
                     py-3
-                    focus:outline-none
-                    focus:border-[#12304A]
+                    focus:ring-2
+                    focus:ring-blue-600
+                    outline-none
                 "
+
+                required
 
             />
 
@@ -520,6 +850,43 @@ function InputField({
     );
 
 }
+
+
+
+
+
+
+
+
+
+function Feature({text}) {
+
+
+    return (
+
+        <div
+            className="
+                flex
+                items-center
+                gap-3
+                text-blue-100
+            "
+        >
+
+            <span className="text-green-300">
+                ✓
+            </span>
+
+
+            {text}
+
+
+        </div>
+
+    );
+
+}
+
 
 
 

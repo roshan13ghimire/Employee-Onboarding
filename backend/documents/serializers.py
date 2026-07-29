@@ -103,7 +103,34 @@ class EmployeeDocumentSerializer(serializers.ModelSerializer):
 
         return file
 
+class EmployeeProfileDocumentSerializer(serializers.ModelSerializer):
 
+
+    document_title = serializers.CharField(
+        source="document.title",
+        read_only=True
+    )
+
+
+    action_type = serializers.CharField(
+        source="document.action_type",
+        read_only=True
+    )
+
+
+    class Meta:
+
+        model = EmployeeDocument
+
+        fields = [
+            "id",
+            "document_title",
+            "action_type",
+            "status",
+            "uploaded_file",
+            "submitted_at",
+            "signed_at",
+        ]
 
 
 

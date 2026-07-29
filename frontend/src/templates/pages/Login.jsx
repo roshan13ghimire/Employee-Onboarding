@@ -1,6 +1,7 @@
 import { useState } from "react";
 import api from "../services/api";
 import { useNavigate, Link } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 
 function Login() {
@@ -9,7 +10,12 @@ function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
+    const [showPassword, setShowPassword] = useState(false);
+    const [loading, setLoading] = useState(false);
+
+
     const navigate = useNavigate();
+
 
 
 
@@ -17,6 +23,9 @@ function Login() {
     const handleLogin = async (e) => {
 
         e.preventDefault();
+
+
+        setLoading(true);
 
 
         try {
@@ -45,19 +54,15 @@ function Login() {
 
 
 
-            // Get logged in user details
 
             const userResponse = await api.get(
                 "/profile/"
             );
 
 
-
             const role = userResponse.data.role;
 
 
-
-            // Save role for Navbar and Sidebar
 
             localStorage.setItem(
                 "role",
@@ -66,44 +71,64 @@ function Login() {
 
 
 
-
-
-            if(role === "EMPLOYEE") {
-
-
-                navigate("/dashboard");
-
-
-            }
-
-
-            else if(
-                role === "HR" ||
-                role === "ADMIN"
-            ) {
-
-
-                navigate("/hr-dashboard");
-
-
-            }
+            toast.success(
+                "Login successful!"
+            );
 
 
 
-        } catch(error) {
+            setTimeout(() => {
+
+
+                if(role === "EMPLOYEE") {
+
+                    navigate("/dashboard");
+
+                }
+
+
+                else if(
+                    role === "HR" ||
+                    role === "ADMIN"
+                ) {
+
+                    navigate("/hr-dashboard");
+
+                }
+
+
+            }, 800);
+
+
+
+
+
+        }
+
+
+        catch(error) {
 
 
             console.log(error.response);
 
 
-            alert(
+            toast.error(
                 "Invalid username or password"
             );
 
 
         }
 
+
+        finally {
+
+            setLoading(false);
+
+        }
+
+
     };
+
 
 
 
@@ -116,20 +141,106 @@ function Login() {
         <div
             className="
                 min-h-screen
-                bg-[#FAFAF8]
+                bg-slate-50
                 flex
-                items-center
-                justify-center
-                px-6
             "
         >
+
+
+
+
+            {/* LEFT SIDE */}
+
+
+            <div
+                className="
+                    hidden
+                    lg:flex
+                    lg:w-1/2
+                    bg-blue-900
+                    text-white
+                    flex-col
+                    justify-center
+                    px-16
+                "
+            >
+
+
+                <h1
+                    className="
+                        text-5xl
+                        font-bold
+                        leading-tight
+                    "
+                >
+                    Employee
+                    <br/>
+                    Onboarding Portal
+                </h1>
+
+
+
+                <p
+                    className="
+                        mt-6
+                        text-lg
+                        text-blue-100
+                        max-w-md
+                    "
+                >
+
+                    A secure digital platform for managing
+                    employee onboarding workflows,
+                    documents, and HR collaboration.
+
+                </p>
+
+
+
+
+
+                <div
+                    className="
+                        mt-10
+                        space-y-5
+                    "
+                >
+
+
+                    <Feature text="Secure Authentication"/>
+
+                    <Feature text="Document Management"/>
+
+                    <Feature text="HR Workflow Management"/>
+
+                    <Feature text="Employee Progress Tracking"/>
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+
+
+
+
+
+            {/* RIGHT SIDE */}
 
 
 
             <div
                 className="
                     w-full
-                    max-w-md
+                    lg:w-1/2
+                    flex
+                    items-center
+                    justify-center
+                    px-6
                 "
             >
 
@@ -138,75 +249,50 @@ function Login() {
 
                 <div
                     className="
-                        text-center
-                        mb-8
-                    "
-                >
-
-
-                    <h1
-                        className="
-                            text-3xl
-                            font-bold
-                            text-[#12304A]
-                        "
-                    >
-                        School Board
-                    </h1>
-
-
-
-                    <p
-                        className="
-                            text-gray-500
-                            mt-2
-                        "
-                    >
-                        Employee Onboarding Portal
-                    </p>
-
-
-                </div>
-
-
-
-
-
-
-
-                <div
-                    className="
+                        w-full
+                        max-w-md
                         bg-white
+                        rounded-2xl
+                        shadow-xl
                         border
-                        border-gray-200
-                        shadow-sm
+                        border-slate-200
                         p-8
                     "
                 >
 
 
 
-                    <h2
+
+                    <div
                         className="
-                            text-2xl
-                            font-semibold
-                            text-[#12304A]
-                            mb-2
-                        "
-                    >
-                        Sign in
-                    </h2>
-
-
-
-                    <p
-                        className="
-                            text-gray-600
                             mb-8
                         "
                     >
-                        Access your employee account
-                    </p>
+
+                        <h2
+                            className="
+                                text-3xl
+                                font-bold
+                                text-slate-900
+                            "
+                        >
+                            Welcome Back
+                        </h2>
+
+
+
+                        <p
+                            className="
+                                mt-2
+                                text-slate-500
+                            "
+                        >
+                            Sign in to access your account
+                        </p>
+
+
+                    </div>
+
 
 
 
@@ -216,8 +302,11 @@ function Login() {
 
                     <form
                         onSubmit={handleLogin}
-                        className="space-y-5"
+                        className="
+                            space-y-6
+                        "
                     >
+
 
 
 
@@ -230,11 +319,13 @@ function Login() {
                                     block
                                     text-sm
                                     font-medium
-                                    text-gray-700
+                                    text-slate-700
                                     mb-2
                                 "
                             >
+
                                 Username
+
                             </label>
 
 
@@ -258,18 +349,25 @@ function Login() {
 
                                 className="
                                     w-full
-                                    border
-                                    border-gray-300
                                     px-4
                                     py-3
-                                    focus:outline-none
-                                    focus:border-[#12304A]
+                                    rounded-lg
+                                    border
+                                    border-slate-300
+                                    outline-none
+                                    focus:ring-2
+                                    focus:ring-blue-600
                                 "
+
+                                required
 
                             />
 
 
                         </div>
+
+
+
 
 
 
@@ -285,44 +383,101 @@ function Login() {
                                     block
                                     text-sm
                                     font-medium
-                                    text-gray-700
+                                    text-slate-700
                                     mb-2
                                 "
                             >
+
                                 Password
+
                             </label>
 
 
 
 
-                            <input
-
-                                type="password"
-
-                                value={password}
-
-                                onChange={
-                                    e =>
-                                    setPassword(
-                                        e.target.value
-                                    )
-                                }
-
-
-                                placeholder="Enter password"
-
-
+                            <div
                                 className="
-                                    w-full
-                                    border
-                                    border-gray-300
-                                    px-4
-                                    py-3
-                                    focus:outline-none
-                                    focus:border-[#12304A]
+                                    relative
                                 "
+                            >
 
-                            />
+
+                                <input
+
+                                    type={
+                                        showPassword
+                                        ? "text"
+                                        : "password"
+                                    }
+
+
+                                    value={password}
+
+
+                                    onChange={
+                                        e =>
+                                        setPassword(
+                                            e.target.value
+                                        )
+                                    }
+
+
+                                    placeholder="Enter password"
+
+
+                                    className="
+                                        w-full
+                                        px-4
+                                        py-3
+                                        rounded-lg
+                                        border
+                                        border-slate-300
+                                        outline-none
+                                        focus:ring-2
+                                        focus:ring-blue-600
+                                        pr-16
+                                    "
+
+                                    required
+
+                                />
+
+
+
+                                <button
+
+                                    type="button"
+
+                                    onClick={
+                                        () =>
+                                        setShowPassword(
+                                            !showPassword
+                                        )
+                                    }
+
+
+                                    className="
+                                        absolute
+                                        right-4
+                                        top-3
+                                        text-sm
+                                        text-blue-700
+                                    "
+
+                                >
+
+                                    {
+                                        showPassword
+                                        ? "Hide"
+                                        : "Show"
+                                    }
+
+
+                                </button>
+
+
+
+                            </div>
 
 
                         </div>
@@ -333,24 +488,35 @@ function Login() {
 
 
 
+
                         <button
+
+                            disabled={loading}
+
 
                             className="
                                 w-full
-                                bg-[#12304A]
+                                bg-blue-700
+                                hover:bg-blue-800
                                 text-white
                                 py-3
-                                font-medium
-                                hover:bg-[#0D2438]
+                                rounded-lg
+                                font-semibold
                                 transition
+                                disabled:opacity-50
                             "
 
                         >
 
-                            Login
+
+                            {
+                                loading
+                                ? "Signing in..."
+                                : "Sign In"
+                            }
+
 
                         </button>
-
 
 
 
@@ -366,14 +532,11 @@ function Login() {
                     <div
                         className="
                             mt-8
-                            border-t
-                            pt-5
                             text-center
                             text-sm
-                            text-gray-600
+                            text-slate-600
                         "
                     >
-
 
                         Need an account?
 
@@ -384,8 +547,8 @@ function Login() {
 
                             className="
                                 ml-2
-                                text-[#12304A]
-                                font-medium
+                                text-blue-700
+                                font-semibold
                                 hover:underline
                             "
 
@@ -400,26 +563,11 @@ function Login() {
 
 
 
+
+
+
                 </div>
 
-
-
-
-
-
-
-                <p
-                    className="
-                        text-center
-                        text-sm
-                        text-gray-500
-                        mt-6
-                    "
-                >
-
-                    For access issues, please contact Human Resources.
-
-                </p>
 
 
 
@@ -427,8 +575,52 @@ function Login() {
 
 
 
+
+
+
         </div>
 
+
+    );
+
+
+}
+
+
+
+
+
+
+function Feature({text}) {
+
+
+    return (
+
+        <div
+            className="
+                flex
+                items-center
+                gap-3
+                text-blue-100
+            "
+        >
+
+            <span
+                className="
+                    text-green-300
+                    font-bold
+                "
+            >
+                ✓
+            </span>
+
+
+            <span>
+                {text}
+            </span>
+
+
+        </div>
 
     );
 

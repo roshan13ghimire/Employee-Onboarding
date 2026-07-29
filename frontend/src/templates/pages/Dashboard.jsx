@@ -7,8 +7,9 @@ function Dashboard() {
 
 
     const [documents, setDocuments] = useState([]);
-    const navigate = useNavigate();
+    const [profile, setProfile] = useState(null);
 
+    const navigate = useNavigate();
 
 
 
@@ -19,7 +20,6 @@ function Dashboard() {
             const response = await api.get(
                 "/my-documents/"
             );
-
 
             setDocuments(response.data);
 
@@ -36,12 +36,36 @@ function Dashboard() {
 
 
 
+    const fetchProfile = async () => {
+
+        try {
+
+            const response = await api.get(
+                "/profile/"
+            );
+
+            setProfile(response.data);
+
+
+        } catch(error) {
+
+            console.log(error);
+
+        }
+
+    };
+
+
+
+
+
+
     useEffect(() => {
 
         fetchDocuments();
+        fetchProfile();
 
     }, []);
-
 
 
 
@@ -103,7 +127,6 @@ function Dashboard() {
 
 
 
-
     const total = documents.length;
 
 
@@ -124,7 +147,6 @@ function Dashboard() {
         doc.status === "APPROVED"
 
     ).length;
-
 
 
 
@@ -157,7 +179,7 @@ function Dashboard() {
 
 
 
-            {/* Welcome */}
+            {/* Welcome Section */}
 
 
             <div
@@ -178,7 +200,7 @@ function Dashboard() {
                     "
                 >
 
-                    Welcome back
+                    Welcome back, {profile?.username || "Employee"}
 
                 </h1>
 
@@ -197,8 +219,112 @@ function Dashboard() {
                 </p>
 
 
+            </div>
+
+
+
+
+
+
+
+            {/* Employee Profile */}
+
+
+            <div
+                className="
+                    bg-white
+                    border
+                    border-gray-200
+                    p-8
+                "
+            >
+
+
+                <h2
+                    className="
+                        text-xl
+                        font-semibold
+                        text-[#12304A]
+                        mb-5
+                    "
+                >
+
+                    Employee Information
+
+                </h2>
+
+
+
+                {
+
+                profile ?
+
+
+                <div
+                    className="
+                        grid
+                        md:grid-cols-2
+                        gap-5
+                    "
+                >
+
+
+                    <ProfileItem
+
+                        label="Employee ID"
+
+                        value={profile.employee_id}
+
+                    />
+
+
+                    <ProfileItem
+
+                        label="Department"
+
+                        value={profile.department}
+
+                    />
+
+
+                    <ProfileItem
+
+                        label="Job Title"
+
+                        value={profile.job_title}
+
+                    />
+
+
+                    <ProfileItem
+
+                        label="Email"
+
+                        value={profile.email}
+
+                    />
+
+
+
+                </div>
+
+
+                :
+
+
+                <p className="text-gray-500">
+
+                    Loading profile...
+
+                </p>
+
+
+                }
+
+
 
             </div>
+
 
 
 
@@ -276,7 +402,6 @@ function Dashboard() {
             >
 
 
-
                 <div
                     className="
                         flex
@@ -284,7 +409,6 @@ function Dashboard() {
                         mb-3
                     "
                 >
-
 
                     <h2
                         className="
@@ -307,9 +431,7 @@ function Dashboard() {
                     </span>
 
 
-
                 </div>
-
 
 
 
@@ -322,7 +444,6 @@ function Dashboard() {
                     "
                 >
 
-
                     <div
 
                         className="
@@ -334,9 +455,7 @@ function Dashboard() {
                             width:`${progress}%`
                         }}
 
-                    >
-
-                    </div>
+                    />
 
 
                 </div>
@@ -354,10 +473,7 @@ function Dashboard() {
 
             {/* Documents */}
 
-
-
             <div>
-
 
 
                 <h2
@@ -372,9 +488,6 @@ function Dashboard() {
                     My Documents
 
                 </h2>
-
-
-
 
 
 
@@ -397,9 +510,7 @@ function Dashboard() {
                     </div>
 
 
-
                     :
-
 
 
                     <div
@@ -412,290 +523,171 @@ function Dashboard() {
 
 
 
-
-
                     {
 
-                        documents.map(doc => (
+                    documents.map(doc => (
 
 
+                        <div
 
-                            <div
+                            key={doc.id}
 
-                                key={doc.id}
+                            className="
+                                bg-white
+                                border
+                                border-gray-200
+                                p-6
+                            "
 
+                        >
+
+
+                            <h3
                                 className="
-                                    bg-white
-                                    border
-                                    border-gray-200
-                                    p-6
+                                    text-lg
+                                    font-semibold
+                                    text-[#12304A]
                                 "
-
                             >
 
+                                {doc.document_title}
 
+                            </h3>
 
 
 
-                                <h3
-                                    className="
-                                        text-lg
-                                        font-semibold
-                                        text-[#12304A]
-                                    "
-                                >
+                            <p className="text-sm text-gray-500 mt-2">
 
-                                    {doc.document_title}
+                                Action: {doc.action_type}
 
-                                </h3>
+                            </p>
 
 
 
+                            <div className="mt-3">
 
+                                Status:
 
+                                <StatusBadge
 
-                                <p
-                                    className="
-                                        text-sm
-                                        text-gray-500
-                                        mt-2
-                                    "
-                                >
+                                    status={doc.status}
 
-                                    Action:
-
-                                    {" "}
-
-                                    {doc.action_type}
-
-                                </p>
-
-
-
-
-
-
-
-                                <div className="mt-3">
-
-
-                                    Status:
-
-
-                                    <StatusBadge
-
-                                        status={doc.status}
-
-                                    />
-
-
-                                </div>
-
-
-
-
-
-
-
-
-
-                                {/* Upload Document */}
-
-
-
-                                {
-                                    doc.status === "PENDING" &&
-
-                                    doc.action_type === "UPLOAD" &&
-
-
-                                    <div
-                                        className="
-                                            mt-5
-                                        "
-                                    >
-
-
-
-                                        <label
-                                            className="
-                                                block
-                                                text-sm
-                                                text-gray-600
-                                                mb-2
-                                            "
-                                        >
-
-                                            Upload completed document
-
-                                        </label>
-
-
-
-
-                                        <input
-
-                                            type="file"
-
-                                            onChange={
-                                                e =>
-                                                uploadDocument(
-                                                    doc.id,
-                                                    e.target.files[0]
-                                                )
-                                            }
-
-                                            className="
-                                                text-sm
-                                            "
-
-                                        />
-
-
-
-                                    </div>
-
-
-                                }
-
-
-
-
-
-
-
-
-
-                              {/* View Document */}
-
-
-{
-    doc.document_file &&
-
-
-    <a
-
-        href={`http://127.0.0.1:8000/${doc.document_file}`}
-
-        target="_blank"
-
-        rel="noreferrer"
-
-        className="
-            inline-block
-            mt-5
-            border
-            border-[#12304A]
-            text-[#12304A]
-            px-5
-            py-2
-            rounded-lg
-            hover:bg-gray-100
-        "
-
-    >
-
-        View Document
-
-    </a>
-
-}
-
-
-
-
-{/* Signature */}
-
-
-
-{
-    doc.status === "PENDING" &&
-
-    doc.action_type === "SIGNATURE" &&
-
-
-
-    <button
-    onClick={() => navigate(`/sign-document/${doc.id}`)}
-
-        className="
-            block
-            mt-4
-            bg-[#12304A]
-            text-white
-            px-5
-            py-2
-            rounded-lg
-            hover:bg-[#0D2438]
-        "
-
-    >
-
-        Sign Document
-
-    </button>
-
-
-
-
-}
-
-
-
-
-
-
-
-
-                                {/* View Only */}
-
-
-
-                                {
-                                    doc.action_type === "VIEW_ONLY" &&
-
-
-                                    <button
-
-                                        className="
-                                            mt-5
-                                            border
-                                            border-gray-300
-                                            px-5
-                                            py-2
-                                            rounded-lg
-                                        "
-
-                                    >
-
-                                        View Document
-
-                                    </button>
-
-
-                                }
-
-
-
-
-
+                                />
 
                             </div>
 
 
 
-                        ))
+
+
+                            {
+                                doc.status === "PENDING" &&
+                                doc.action_type === "UPLOAD" &&
+
+
+                                <input
+
+                                    type="file"
+
+                                    onChange={
+                                        e =>
+                                        uploadDocument(
+                                            doc.id,
+                                            e.target.files[0]
+                                        )
+                                    }
+
+                                    className="mt-5"
+
+                                />
+
+                            }
+
+
+
+
+
+                            {
+                                doc.document_file &&
+
+
+                                <a
+
+                                    href={doc.document_file}
+
+                                    target="_blank"
+
+                                    rel="noreferrer"
+
+                                    className="
+                                        inline-block
+                                        mt-5
+                                        border
+                                        border-[#12304A]
+                                        text-[#12304A]
+                                        px-5
+                                        py-2
+                                        rounded-lg
+                                    "
+
+                                >
+
+                                    View Document
+
+                                </a>
+
+                            }
+
+
+
+
+
+                            {
+                                doc.status === "PENDING" &&
+                                doc.action_type === "SIGNATURE" &&
+
+
+                                <button
+
+                                    onClick={() =>
+                                        navigate(
+                                            `/sign-document/${doc.id}`
+                                        )
+                                    }
+
+
+                                    className="
+                                        mt-5
+                                        bg-[#12304A]
+                                        text-white
+                                        px-5
+                                        py-2
+                                        rounded-lg
+                                    "
+
+                                >
+
+                                    Sign Document
+
+                                </button>
+
+
+                            }
+
+
+
+                        </div>
+
+
+                    ))
 
                     }
-
 
 
                     </div>
 
 
                 }
-
-
 
 
             </div>
@@ -719,13 +711,48 @@ function Dashboard() {
 
 
 
+function ProfileItem({label,value}) {
 
-function InfoCard({
 
-    title,
-    value
+    return (
 
-}) {
+        <div>
+
+
+            <p className="text-sm text-gray-500">
+
+                {label}
+
+            </p>
+
+
+            <p
+                className="
+                    font-semibold
+                    text-[#12304A]
+                "
+            >
+
+                {value || "-"}
+
+            </p>
+
+
+        </div>
+
+    );
+
+}
+
+
+
+
+
+
+
+
+
+function InfoCard({title,value}) {
 
 
     return (
@@ -739,17 +766,11 @@ function InfoCard({
             "
         >
 
-            <p
-                className="
-                    text-sm
-                    text-gray-500
-                "
-            >
+            <p className="text-sm text-gray-500">
 
                 {title}
 
             </p>
-
 
 
             <h2
@@ -780,11 +801,7 @@ function InfoCard({
 
 
 
-function StatusBadge({
-
-    status
-
-}) {
+function StatusBadge({status}) {
 
 
     let classes =
@@ -793,35 +810,26 @@ function StatusBadge({
 
 
     if(status==="PENDING")
-    {
         classes =
         "bg-yellow-100 text-yellow-700";
-    }
 
 
 
     if(status==="SUBMITTED")
-    {
         classes =
         "bg-blue-100 text-blue-700";
-    }
 
 
 
     if(status==="APPROVED")
-    {
         classes =
         "bg-green-100 text-green-700";
-    }
 
 
 
     if(status==="REJECTED")
-    {
         classes =
         "bg-red-100 text-red-700";
-    }
-
 
 
 
@@ -834,8 +842,8 @@ function StatusBadge({
                 ml-3
                 px-3
                 py-1
-                text-sm
                 rounded-full
+                text-sm
                 ${classes}
             `}
 
@@ -847,11 +855,7 @@ function StatusBadge({
 
     );
 
-
 }
-
-
-
 
 
 export default Dashboard;

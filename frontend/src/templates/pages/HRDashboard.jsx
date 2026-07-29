@@ -11,6 +11,9 @@ function HRDashboard() {
 
     const [documents, setDocuments] = useState([]);
 
+    const [employees, setEmployees] = useState([]);
+
+
 
 
     const fetchDocuments = async () => {
@@ -35,15 +38,48 @@ function HRDashboard() {
 
 
 
+
+
+
+    const fetchEmployees = async () => {
+
+        try {
+
+            const response = await api.get(
+                "/employees/"
+            );
+
+
+            setEmployees(response.data);
+
+
+        } catch(error) {
+
+            console.log(error);
+
+        }
+
+    };
+
+
+
+
+
+
+
+
     const updateStatus = async (id, action) => {
 
         try {
 
             await api.post(
+
                 `/hr-documents/${id}/status/`,
+
                 {
                     action: action
                 }
+
             );
 
 
@@ -60,11 +96,49 @@ function HRDashboard() {
 
 
 
+
+
+
+
+
     useEffect(() => {
 
         fetchDocuments();
+        fetchEmployees();
 
     }, []);
+
+
+
+
+
+
+
+
+
+    const pendingReviews = documents.filter(
+
+        doc =>
+        doc.status === "SUBMITTED"
+
+    ).length;
+
+
+
+
+
+    const approvedDocuments = documents.filter(
+
+        doc =>
+        doc.status === "APPROVED"
+
+    ).length;
+
+
+
+
+
+
 
 
 
@@ -73,7 +147,9 @@ return (
 <div className="space-y-8">
 
 
+
     {/* Header */}
+
 
     <div className="
         bg-white
@@ -88,24 +164,31 @@ return (
 
         <div>
 
+
             <h1 className="
                 text-3xl
                 font-bold
                 text-gray-800
             ">
+
                 HR Dashboard
+
             </h1>
+
 
 
             <p className="
                 text-gray-500
                 mt-2
             ">
+
                 Manage employee onboarding and document approvals.
+
             </p>
 
 
         </div>
+
 
 
 
@@ -115,6 +198,7 @@ return (
             onClick={() =>
                 navigate("/upload-document")
             }
+
 
             className="
                 bg-[#12304A]
@@ -139,104 +223,67 @@ return (
 
 
 
+
+
+
+
     {/* Statistics */}
+
 
 
     <div className="
         grid
-        md:grid-cols-3
+        md:grid-cols-4
         gap-6
     ">
 
 
-        <div className="
-            bg-white
-            border
-            rounded-xl
-            p-6
-        ">
 
-            <p className="text-gray-500">
-                Total Submissions
-            </p>
 
-            <h2 className="
-                text-3xl
-                font-bold
-                mt-2
-            ">
-                {documents.length}
-            </h2>
 
-        </div>
+        <StatCard
+
+            title="Total Employees"
+
+            value={employees.length}
+
+        />
 
 
 
 
 
-        <div className="
-            bg-white
-            border
-            rounded-xl
-            p-6
-        ">
+        <StatCard
 
-            <p className="text-gray-500">
-                Pending Reviews
-            </p>
+            title="Total Submissions"
 
+            value={documents.length}
 
-            <h2 className="
-                text-3xl
-                font-bold
-                mt-2
-            ">
-
-            {
-                documents.filter(
-                    doc =>
-                    doc.status === "SUBMITTED"
-                ).length
-            }
-
-            </h2>
-
-
-        </div>
+        />
 
 
 
 
 
-        <div className="
-            bg-white
-            border
-            rounded-xl
-            p-6
-        ">
+        <StatCard
 
-            <p className="text-gray-500">
-                Approved
-            </p>
+            title="Pending Reviews"
+
+            value={pendingReviews}
+
+        />
 
 
-            <h2 className="
-                text-3xl
-                font-bold
-                mt-2
-            ">
-
-            {
-                documents.filter(
-                    doc =>
-                    doc.status === "APPROVED"
-                ).length
-            }
-
-            </h2>
 
 
-        </div>
+
+        <StatCard
+
+            title="Approved"
+
+            value={approvedDocuments}
+
+        />
 
 
 
@@ -247,9 +294,127 @@ return (
 
 
 
-    {/* Documents */}
+
+
+
+
+
+
+    {/* Employee List Preview */}
+
 
     <div>
+
+
+        <h2 className="
+            text-xl
+            font-semibold
+            mb-4
+        ">
+
+            Employees
+
+        </h2>
+
+
+
+
+
+        <div className="
+            grid
+            md:grid-cols-3
+            gap-5
+        ">
+
+
+        {
+            employees.map(employee => (
+
+
+                <div
+
+                    key={employee.id}
+
+                    className="
+                        bg-white
+                        border
+                        rounded-xl
+                        p-5
+                    "
+
+                >
+
+
+                    <h3 className="
+                        font-semibold
+                        text-lg
+                    ">
+
+                        {employee.username}
+
+                    </h3>
+
+
+
+                    <p className="text-gray-600 mt-2">
+
+                        ID:
+                        {" "}
+                        {employee.employee_id}
+
+                    </p>
+
+
+
+                    <p className="text-gray-600">
+
+                        Department:
+                        {" "}
+                        {employee.department}
+
+                    </p>
+
+
+
+                    <p className="text-gray-600">
+
+                        Position:
+                        {" "}
+                        {employee.job_title}
+
+                    </p>
+
+
+                </div>
+
+
+            ))
+        }
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    {/* Documents */}
+
+
+
+    <div>
+
 
 
     <h2 className="
@@ -257,12 +422,17 @@ return (
         font-semibold
         mb-4
     ">
+
         Employee Documents
+
     </h2>
 
 
 
+
+
     <div className="space-y-5">
+
 
 
     {
@@ -277,7 +447,9 @@ return (
             text-gray-500
         ">
 
+
             No documents assigned yet.
+
 
         </div>
 
@@ -290,20 +462,22 @@ return (
         documents.map(doc => (
 
 
+
         <div
 
-        key={doc.id}
+            key={doc.id}
 
-        className="
-            bg-white
-            border
-            rounded-xl
-            p-6
-            hover:shadow-md
-            transition
-        "
+            className="
+                bg-white
+                border
+                rounded-xl
+                p-6
+                hover:shadow-md
+                transition
+            "
 
         >
+
 
 
 
@@ -322,33 +496,49 @@ return (
                     font-semibold
                 ">
 
+
                     {doc.document_title}
 
+
                 </h3>
+
+
 
 
                 <p className="text-gray-600 mt-2">
 
                     Employee:
+
                     <span className="font-medium ml-2">
+
                         {doc.employee_name}
+
                     </span>
 
+
                 </p>
+
+
 
 
 
                 <p className="text-gray-600">
 
                     Department:
+
+                    {" "}
                     {doc.department}
 
                 </p>
 
 
+
+
                 <p className="text-gray-600">
 
                     Position:
+
+                    {" "}
                     {doc.job_title}
 
                 </p>
@@ -356,6 +546,8 @@ return (
 
 
             </div>
+
+
 
 
 
@@ -371,7 +563,9 @@ return (
                 text-blue-700
             ">
 
+
                 {doc.status}
+
 
             </span>
 
@@ -383,28 +577,34 @@ return (
 
 
 
+
+
+
+
             {
                 doc.uploaded_file &&
 
 
                 <a
 
-                href={`${backendURL}${doc.uploaded_file}`}
 
-                target="_blank"
+                    href={`${backendURL}${doc.uploaded_file}`}
 
-                rel="noreferrer"
+                    target="_blank"
 
-                className="
-                    inline-block
-                    mt-5
-                    text-blue-600
-                    hover:underline
-                "
+                    rel="noreferrer"
+
+
+                    className="
+                        inline-block
+                        mt-5
+                        text-blue-600
+                        hover:underline
+                    "
 
                 >
 
-                View Submitted File
+                    View Submitted File
 
                 </a>
 
@@ -415,8 +615,13 @@ return (
 
 
 
+
+
+
+
             {
                 doc.status === "SUBMITTED" &&
+
 
 
                 <div className="
@@ -426,65 +631,79 @@ return (
                 ">
 
 
-                <button
 
-                onClick={() =>
-                    updateStatus(
-                        doc.id,
-                        "APPROVE"
-                    )
-                }
-
-                className="
-                    bg-green-700
-                    text-white
-                    px-5
-                    py-2
-                    rounded-lg
-                "
-
-                >
-
-                Approve
-
-                </button>
+                    <button
 
 
+                        onClick={() =>
+                            updateStatus(
+                                doc.id,
+                                "APPROVE"
+                            )
+                        }
+
+
+                        className="
+                            bg-green-700
+                            text-white
+                            px-5
+                            py-2
+                            rounded-lg
+                        "
+
+
+                    >
+
+                        Approve
+
+                    </button>
 
 
 
-                <button
 
-                onClick={() =>
-                    updateStatus(
-                        doc.id,
-                        "REJECT"
-                    )
-                }
 
-                className="
-                    bg-red-700
-                    text-white
-                    px-5
-                    py-2
-                    rounded-lg
-                "
 
-                >
+                    <button
 
-                Reject
 
-                </button>
+                        onClick={() =>
+                            updateStatus(
+                                doc.id,
+                                "REJECT"
+                            )
+                        }
+
+
+
+                        className="
+                            bg-red-700
+                            text-white
+                            px-5
+                            py-2
+                            rounded-lg
+                        "
+
+
+                    >
+
+                        Reject
+
+                    </button>
+
 
 
                 </div>
+
 
 
             }
 
 
 
+
+
         </div>
+
 
 
         ))
@@ -493,9 +712,14 @@ return (
     }
 
 
-    </div>
 
     </div>
+
+
+    </div>
+
+
+
 
 
 </div>
@@ -503,6 +727,55 @@ return (
 );
 
 }
+
+
+
+
+
+
+
+
+
+function StatCard({title,value}) {
+
+
+    return (
+
+        <div className="
+            bg-white
+            border
+            rounded-xl
+            p-6
+        ">
+
+
+            <p className="text-gray-500">
+
+                {title}
+
+            </p>
+
+
+
+            <h2 className="
+                text-3xl
+                font-bold
+                mt-2
+                text-[#12304A]
+            ">
+
+                {value}
+
+            </h2>
+
+
+        </div>
+
+    );
+
+}
+
+
 
 
 export default HRDashboard;

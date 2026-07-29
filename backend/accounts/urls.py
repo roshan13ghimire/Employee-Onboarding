@@ -1,6 +1,6 @@
 from .views import SignupAPIView
 from django.urls import path
-from .views import EmployeeListAPIView, ProfileAPIView
+from .views import EmployeeListAPIView, ProfileAPIView, EmployeeDetailAPIView
 urlpatterns = [
 path(
     "signup/",
@@ -13,6 +13,10 @@ path(
 path(
     "profile/",
     ProfileAPIView.as_view()
+),
+path(
+    "employees/<int:id>/",
+    EmployeeDetailAPIView.as_view()
 ),
 
 ]
