@@ -1,7 +1,7 @@
 import { useState } from "react";
 import api from "../services/api";
 import { useNavigate, Link } from "react-router-dom";
-import { toast } from "react-hot-toast";
+import { toast } from "react-toastify";
 
 
 function Signup() {
@@ -27,6 +27,7 @@ function Signup() {
         job_title: ""
 
     });
+
 
 
 
@@ -84,7 +85,7 @@ function Signup() {
 
 
         if(
-            formData.password !== 
+            formData.password !==
             formData.confirmPassword
         ){
 
@@ -95,6 +96,8 @@ function Signup() {
             return;
 
         }
+
+
 
 
 
@@ -120,6 +123,7 @@ function Signup() {
 
 
         setLoading(true);
+
 
 
 
@@ -163,9 +167,13 @@ function Signup() {
 
 
 
+
+
             toast.success(
                 "Account created successfully"
             );
+
+
 
 
 
@@ -179,7 +187,10 @@ function Signup() {
 
 
 
+
+
         }
+
 
         catch(error){
 
@@ -218,176 +229,269 @@ function Signup() {
 
 
 
-
     return (
 
 
-        <div
+<div
+
+    className="
+        min-h-screen
+        bg-gray-100
+        flex
+    "
+
+>
+
+
+
+
+
+
+    {/* LEFT SIDE */}
+
+
+
+    <div
+
+        className="
+            hidden
+            lg:flex
+            lg:w-1/2
+            bg-[#12304A]
+            text-white
+            flex-col
+            justify-center
+            px-16
+        "
+
+    >
+
+
+
+
+        <h1
+
             className="
-                min-h-screen
-                bg-slate-50
-                flex
+                text-5xl
+                font-bold
+                leading-tight
             "
+
+        >
+
+            Start Your
+            <br/>
+            Employee Journey
+
+
+        </h1>
+
+
+
+
+
+
+
+        <p
+
+            className="
+                mt-6
+                text-lg
+                text-gray-200
+                max-w-md
+            "
+
+        >
+
+            Create your employee profile
+            and access onboarding documents,
+            tasks, and HR resources securely.
+
+
+        </p>
+
+
+
+
+
+
+
+
+        <div
+
+            className="
+                mt-10
+                space-y-5
+            "
+
+        >
+
+
+            <Feature text="Secure employee account"/>
+
+            <Feature text="Digital onboarding workflow"/>
+
+            <Feature text="Document management"/>
+
+            <Feature text="HR collaboration"/>
+
+
+        </div>
+
+
+
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    {/* RIGHT SIDE */}
+
+
+
+
+
+    <div
+
+        className="
+            w-full
+            lg:w-1/2
+            flex
+            justify-center
+            items-center
+            px-6
+            py-10
+        "
+
+    >
+
+
+
+
+
+
+        <div
+
+            className="
+                w-full
+                max-w-lg
+                bg-white
+                border
+                border-gray-200
+                rounded-xl
+                p-8
+            "
+
         >
 
 
 
 
 
-            {/* LEFT SIDE */}
+            <h2
 
-
-
-            <div
                 className="
-                    hidden
-                    lg:flex
-                    lg:w-1/2
-                    bg-blue-900
-                    text-white
-                    flex-col
-                    justify-center
-                    px-16
+                    text-3xl
+                    font-bold
+                    text-[#12304A]
                 "
+
             >
 
+                Create Account
 
 
-                <h1
-                    className="
-                        text-5xl
-                        font-bold
-                        leading-tight
-                    "
-                >
-
-                    Start Your
-                    <br/>
-                    Employee Journey
-
-                </h1>
-
-
-
-
-
-                <p
-                    className="
-                        mt-6
-                        text-lg
-                        text-blue-100
-                        max-w-md
-                    "
-                >
-
-                    Create your employee profile
-                    and access onboarding documents,
-                    tasks, and HR resources securely.
-
-                </p>
+            </h2>
 
 
 
 
 
 
+            <p
 
-                <div
-                    className="
-                        mt-10
-                        space-y-5
-                    "
-                >
-
-
-                    <Feature text="Secure employee account"/>
-
-                    <Feature text="Digital onboarding workflow"/>
-
-                    <Feature text="Document management"/>
-
-                    <Feature text="HR collaboration"/>
-
-
-                </div>
-
-
-
-            </div>
-
-
-
-
-
-
-
-
-
-            {/* RIGHT SIDE */}
-
-
-
-
-
-            <div
                 className="
-                    w-full
-                    lg:w-1/2
-                    flex
-                    justify-center
-                    items-center
-                    px-6
-                    py-10
+                    mt-2
+                    mb-8
+                    text-gray-500
                 "
+
+            >
+
+                Register as an employee
+
+
+            </p>
+
+
+
+
+
+
+
+
+
+            <form
+
+                onSubmit={handleSubmit}
+
+                className="
+                    space-y-5
+                "
+
             >
 
 
 
 
 
-                <div
-                    className="
-                        w-full
-                        max-w-lg
-                        bg-white
-                        rounded-2xl
-                        shadow-xl
-                        border
-                        border-slate-200
-                        p-8
-                    "
-                >
+
+                <InputField
+
+                    label="Username"
+
+                    name="username"
+
+                    placeholder="Enter username"
+
+                    value={formData.username}
+
+                    onChange={handleChange}
+
+                />
 
 
 
 
 
-                    <h2
-                        className="
-                            text-3xl
-                            font-bold
-                            text-slate-900
-                        "
-                    >
-
-                        Create Account
-
-                    </h2>
 
 
+                <InputField
 
+                    label="Email Address"
 
-                    <p
-                        className="
-                            mt-2
-                            mb-8
-                            text-slate-500
-                        "
-                    >
+                    name="email"
 
-                        Register as an employee
+                    type="email"
 
-                    </p>
+                    placeholder="Enter email"
+
+                    value={formData.email}
+
+                    onChange={handleChange}
+
+                />
 
 
 
@@ -396,281 +500,90 @@ function Signup() {
 
 
 
-                    <form
 
-                        onSubmit={handleSubmit}
+                <div>
+
+
+                    <label
 
                         className="
-                            space-y-5
+                            block
+                            text-sm
+                            font-medium
+                            text-gray-700
+                            mb-2
                         "
 
                     >
 
+                        Password
 
 
+                    </label>
 
 
 
-                        <InputField
 
-                            label="Username"
 
-                            name="username"
 
-                            placeholder="Enter username"
+                    <div className="relative">
 
-                            value={formData.username}
 
-                            onChange={handleChange}
 
-                        />
+                        <input
 
 
+                            type={
 
+                                showPassword
 
+                                ?
 
+                                "text"
 
-                        <InputField
+                                :
 
-                            label="Email Address"
+                                "password"
 
-                            name="email"
+                            }
 
-                            type="email"
 
-                            placeholder="Enter email"
 
-                            value={formData.email}
+                            name="password"
 
-                            onChange={handleChange}
 
-                        />
+                            value={
+                                formData.password
+                            }
 
 
+                            onChange={
+                                handleChange
+                            }
 
 
+                            placeholder="Create password"
 
 
 
-
-
-                        <div>
-
-
-                            <label className="
-                                block
-                                text-sm
-                                font-medium
-                                mb-2
-                            ">
-
-                                Password
-
-                            </label>
-
-
-
-                            <div className="relative">
-
-
-                                <input
-
-                                    type={
-                                        showPassword
-                                        ?
-                                        "text"
-                                        :
-                                        "password"
-                                    }
-
-
-                                    name="password"
-
-
-                                    value={
-                                        formData.password
-                                    }
-
-
-                                    onChange={
-                                        handleChange
-                                    }
-
-
-                                    placeholder="Create password"
-
-
-                                    className="
-                                        w-full
-                                        border
-                                        rounded-lg
-                                        px-4
-                                        py-3
-                                        pr-20
-                                        focus:ring-2
-                                        focus:ring-blue-600
-                                    "
-
-                                />
-
-
-
-                                <button
-
-                                    type="button"
-
-                                    onClick={() =>
-                                    setShowPassword(
-                                        !showPassword
-                                    )}
-
-                                    className="
-                                        absolute
-                                        right-4
-                                        top-3
-                                        text-blue-700
-                                    "
-
-                                >
-
-                                    {
-                                        showPassword
-                                        ?
-                                        "Hide"
-                                        :
-                                        "Show"
-                                    }
-
-                                </button>
-
-
-                            </div>
-
-
-
-
-
-                            <p
-                                className="
-                                    text-xs
-                                    text-slate-500
-                                    mt-2
-                                "
-                            >
-
-                                Minimum 6 characters,
-                                one uppercase,
-                                one lowercase,
-                                one number,
-                                one special character.
-
-                            </p>
-
-
-                        </div>
-
-
-
-
-
-
-
-
-
-                        <InputField
-
-                            label="Confirm Password"
-
-                            name="confirmPassword"
-
-                            type="password"
-
-                            placeholder="Confirm password"
-
-                            value={formData.confirmPassword}
-
-                            onChange={handleChange}
-
-                        />
-
-
-
-
-
-
-
-
-
-                        <div
                             className="
-                                grid
-                                md:grid-cols-2
-                                gap-4
+                                w-full
+                                border
+                                border-gray-300
+                                rounded-lg
+                                px-4
+                                py-3
+                                pr-20
+                                outline-none
+                                focus:ring-2
+                                focus:ring-[#12304A]
                             "
-                        >
 
 
+                            required
 
-                            <InputField
-
-                                label="Employee ID"
-
-                                name="employee_id"
-
-                                placeholder="Employee ID"
-
-                                value={formData.employee_id}
-
-                                onChange={handleChange}
-
-                            />
-
-
-
-
-
-                            <InputField
-
-                                label="Department"
-
-                                name="department"
-
-                                placeholder="Department"
-
-                                value={formData.department}
-
-                                onChange={handleChange}
-
-                            />
-
-
-
-                        </div>
-
-
-
-
-
-
-
-
-
-                        <InputField
-
-                            label="Job Title"
-
-                            name="job_title"
-
-                            placeholder="Job Title"
-
-                            value={formData.job_title}
-
-                            onChange={handleChange}
 
                         />
-
-
-
 
 
 
@@ -679,28 +592,35 @@ function Signup() {
 
                         <button
 
-                            disabled={loading}
+
+                            type="button"
+
+
+
+                            onClick={() =>
+                                setShowPassword(
+                                    !showPassword
+                                )
+                            }
+
+
 
                             className="
-                                w-full
-                                bg-blue-700
-                                hover:bg-blue-800
-                                text-white
-                                py-3
-                                rounded-lg
-                                font-semibold
-                                transition
-                                disabled:opacity-50
+                                absolute
+                                right-4
+                                top-3
+                                text-[#12304A]
                             "
+
 
                         >
 
                             {
-                                loading
+                                showPassword
                                 ?
-                                "Creating Account..."
+                                "Hide"
                                 :
-                                "Create Account"
+                                "Show"
                             }
 
 
@@ -709,10 +629,7 @@ function Signup() {
 
 
 
-
-                    </form>
-
-
+                    </div>
 
 
 
@@ -720,37 +637,103 @@ function Signup() {
 
 
                     <p
+
                         className="
-                            mt-8
-                            text-center
-                            text-sm
-                            text-slate-600
+                            text-xs
+                            text-gray-500
+                            mt-2
                         "
+
                     >
 
-                        Already have an account?
-
-
-                        <Link
-
-                            to="/login"
-
-                            className="
-                                ml-2
-                                text-blue-700
-                                font-semibold
-                            "
-
-                        >
-
-                            Login
-
-                        </Link>
+                        Minimum 6 characters,
+                        one uppercase,
+                        one lowercase,
+                        one number,
+                        one special character.
 
 
                     </p>
 
 
+                </div>
+
+
+
+
+
+
+
+
+
+                <InputField
+
+                    label="Confirm Password"
+
+                    name="confirmPassword"
+
+                    type="password"
+
+                    placeholder="Confirm password"
+
+                    value={formData.confirmPassword}
+
+                    onChange={handleChange}
+
+                />
+
+
+
+
+
+
+
+
+
+                <div
+
+                    className="
+                        grid
+                        md:grid-cols-2
+                        gap-4
+                    "
+
+                >
+
+
+
+                    <InputField
+
+                        label="Employee ID"
+
+                        name="employee_id"
+
+                        placeholder="Employee ID"
+
+                        value={formData.employee_id}
+
+                        onChange={handleChange}
+
+                    />
+
+
+
+
+
+
+                    <InputField
+
+                        label="Department"
+
+                        name="department"
+
+                        placeholder="Department"
+
+                        value={formData.department}
+
+                        onChange={handleChange}
+
+                    />
 
 
 
@@ -759,13 +742,144 @@ function Signup() {
 
 
 
-            </div>
+
+
+
+
+                <InputField
+
+                    label="Job Title"
+
+                    name="job_title"
+
+                    placeholder="Job Title"
+
+                    value={formData.job_title}
+
+                    onChange={handleChange}
+
+                />
+
+
+
+
+
+
+
+
+
+                <button
+
+
+                    disabled={loading}
+
+
+
+                    className="
+                        w-full
+                        bg-[#12304A]
+                        hover:bg-[#1c4665]
+                        text-white
+                        py-3
+                        rounded-lg
+                        font-semibold
+                        transition
+                        disabled:opacity-50
+                    "
+
+
+                >
+
+
+                    {
+                        loading
+
+                        ?
+
+                        "Creating Account..."
+
+                        :
+
+                        "Create Account"
+                    }
+
+
+                </button>
+
+
+
+
+
+            </form>
+
+
+
+
+
+
+
+
+
+            <p
+
+                className="
+                    mt-8
+                    text-center
+                    text-sm
+                    text-gray-600
+                "
+
+            >
+
+                Already have an account?
+
+
+                <Link
+
+
+                    to="/login"
+
+
+
+                    className="
+                        ml-2
+                        text-[#12304A]
+                        font-semibold
+                        hover:underline
+                    "
+
+
+                >
+
+                    Login
+
+
+                </Link>
+
+
+
+            </p>
+
 
 
 
 
 
         </div>
+
+
+
+
+
+    </div>
+
+
+
+
+
+
+
+</div>
 
 
     );
@@ -803,7 +917,7 @@ function InputField({
                     block
                     text-sm
                     font-medium
-                    text-slate-700
+                    text-gray-700
                     mb-2
                 "
 
@@ -811,38 +925,50 @@ function InputField({
 
                 {label}
 
+
             </label>
+
 
 
 
 
             <input
 
+
                 type={type}
+
 
                 name={name}
 
+
                 value={value}
+
 
                 onChange={onChange}
 
+
                 placeholder={placeholder}
+
 
 
                 className="
                     w-full
                     border
+                    border-gray-300
                     rounded-lg
                     px-4
                     py-3
-                    focus:ring-2
-                    focus:ring-blue-600
                     outline-none
+                    focus:ring-2
+                    focus:ring-[#12304A]
                 "
+
 
                 required
 
+
             />
+
 
 
         </div>
@@ -864,29 +990,46 @@ function Feature({text}) {
 
     return (
 
+
         <div
+
             className="
                 flex
                 items-center
                 gap-3
-                text-blue-100
+                text-gray-200
             "
+
         >
 
-            <span className="text-green-300">
+
+            <span
+
+                className="
+                    text-green-300
+                    font-bold
+                "
+
+            >
+
                 ✓
+
+
             </span>
+
 
 
             {text}
 
 
+
         </div>
+
 
     );
 
-}
 
+}
 
 
 

@@ -692,6 +692,7 @@ class EmployeeProgressAPIView(APIView):
 
 
 
+
         return Response(
 
             {
@@ -705,3 +706,72 @@ class EmployeeProgressAPIView(APIView):
             }
 
         )
+
+class HRDashboardStatsAPIView(APIView):
+
+    permission_classes = [
+        IsAuthenticated,
+        IsHRUser
+    ]
+
+
+    def get(self, request):
+
+        employees = EmployeeProfile.objects.all()
+
+        total_employees = employees.count()
+
+        completed_employees = 0
+        in_progress_employees = 0
+        not_started_employees = 0
+
+        for employee in employees:
+
+            employee_documents = EmployeeDocument.objects.filter(
+                employee=employee
+            )
+
+            total_docs = employee_documents.count()
+
+            approved_docs = employee_documents.filter(
+                status="APPROVED"
+            ).count()
+
+            if total_docs == 0:
+                not_started_employees += 1
+
+            elif approved_docs == total_docs:
+                completed_employees += 1
+
+            elif approved_docs == 0:
+                not_started_employees += 1
+
+            else:
+                in_progress_employees += 1
+
+
+        pending_reviews = EmployeeDocument.objects.filter(
+            status="SUBMITTED"
+        ).count()
+
+
+        approved_documents = EmployeeDocument.objects.filter(
+            status="APPROVED"
+        ).count()
+
+
+        return Response({
+
+            "total_employees": total_employees,
+
+            "completed_employees": completed_employees,
+
+            "in_progress_employees": in_progress_employees,
+
+            "not_started_employees": not_started_employees,
+
+            "pending_reviews": pending_reviews,
+
+            "approved_documents": approved_documents,
+
+        })

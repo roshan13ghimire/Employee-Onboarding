@@ -74,6 +74,7 @@ class EmployeeListSerializer(serializers.ModelSerializer):
             "employee_id",
             "department",
             "job_title",
+            "is_active",
         ]
 class EmployeeDetailSerializer(serializers.ModelSerializer):
 
@@ -102,6 +103,19 @@ class EmployeeDetailSerializer(serializers.ModelSerializer):
             "username",
             "email",
             "role",
+            "employee_id",
+            "department",
+            "job_title",
+            "is_active",
+        ]
+class EmployeeUpdateSerializer(serializers.ModelSerializer):
+
+
+    class Meta:
+
+        model = EmployeeProfile
+
+        fields = [
             "employee_id",
             "department",
             "job_title",

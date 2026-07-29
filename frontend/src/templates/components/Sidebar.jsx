@@ -141,6 +141,23 @@ function Sidebar() {
                             Assign Documents
 
                         </Link>
+                        <Link
+
+                            to="/employees"
+
+                            className="
+                                block
+                                hover:bg-white/10
+                                p-3
+                                rounded-lg
+                                transition
+                            "
+
+                        >
+
+                            Employees
+
+                        </Link>
 
 
 

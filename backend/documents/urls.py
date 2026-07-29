@@ -10,7 +10,8 @@ from .views import (
     CreateDocumentAPIView,
     SignDocumentAPIView,
     EmployeeDocumentsAPIView,
-    EmployeeProgressAPIView
+    EmployeeProgressAPIView,
+    HRDashboardStatsAPIView
 )
 
 
@@ -70,6 +71,10 @@ urlpatterns = [
 path(
     "employees/<int:id>/progress/",
     EmployeeProgressAPIView.as_view()
+),
+path(
+    "hr/dashboard-stats/",
+    HRDashboardStatsAPIView.as_view()
 ),
 
 ]

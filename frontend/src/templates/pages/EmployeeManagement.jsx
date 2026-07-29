@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
 import { useNavigate } from "react-router-dom";
-
+import { toast } from "react-toastify";
 
 
 function EmployeeManagement() {
@@ -10,8 +10,9 @@ function EmployeeManagement() {
     const [employees, setEmployees] = useState([]);
 
     const [search, setSearch] = useState("");
+
     const navigate = useNavigate();
-    
+    const [selectedEmployee, setSelectedEmployee] = useState(null);
 
 
 
@@ -33,10 +34,48 @@ function EmployeeManagement() {
 
             console.log(error);
 
+            toast.error(
+                "Unable to load employees."
+            );
+
         }
 
     };
 
+
+
+
+
+
+    const deactivateEmployee = async (id) => {
+
+        try {
+
+            await api.patch(
+                `/employees/${id}/deactivate/`
+            );
+
+
+            toast.success(
+                "Employee deactivated successfully."
+            );
+
+
+            fetchEmployees();
+
+
+        } catch(error) {
+
+            console.log(error);
+
+
+            toast.error(
+                "Unable to deactivate employee."
+            );
+
+        }
+
+    };
 
 
 
@@ -59,29 +98,29 @@ function EmployeeManagement() {
     const filteredEmployees = employees.filter(employee => {
 
 
-    const searchText = search.toLowerCase();
+        const searchText = search.toLowerCase();
 
 
-    return (
+        return (
 
-        employee.username?.toLowerCase().includes(searchText)
+            employee.username?.toLowerCase().includes(searchText)
 
-        ||
+            ||
 
-        employee.employee_id?.toLowerCase().includes(searchText)
+            employee.employee_id?.toLowerCase().includes(searchText)
 
-        ||
+            ||
 
-        employee.department?.toLowerCase().includes(searchText)
+            employee.department?.toLowerCase().includes(searchText)
 
-        ||
+            ||
 
-        employee.job_title?.toLowerCase().includes(searchText)
+            employee.job_title?.toLowerCase().includes(searchText)
 
-    );
+        );
 
 
-});
+    });
 
 
 
@@ -93,10 +132,7 @@ function EmployeeManagement() {
 
 return (
 
-
 <div className="space-y-8">
-
-
 
 
 
@@ -112,7 +148,6 @@ return (
         "
     >
 
-
         <h1
             className="
                 text-3xl
@@ -124,7 +159,6 @@ return (
             Employee Management
 
         </h1>
-
 
 
         <p
@@ -215,7 +249,6 @@ return (
 
 
     {
-
         filteredEmployees.length === 0 ?
 
 
@@ -272,6 +305,7 @@ return (
 
 
 
+
                 <div
                     className="
                         mt-4
@@ -295,6 +329,7 @@ return (
 
 
 
+
                     <p>
 
                         <span className="font-medium">
@@ -306,6 +341,7 @@ return (
                         {employee.department}
 
                     </p>
+
 
 
 
@@ -323,6 +359,38 @@ return (
                     </p>
 
 
+
+
+
+                    <p>
+
+                        <span className="font-medium">
+                            Status:
+                        </span>
+
+                        {" "}
+
+
+                        {
+                            employee.is_active
+
+                            ?
+
+                            <span className="text-green-700 font-medium">
+                                Active
+                            </span>
+
+                            :
+
+                            <span className="text-red-700 font-medium">
+                                Inactive
+                            </span>
+                        }
+
+
+                    </p>
+
+
                 </div>
 
 
@@ -331,10 +399,13 @@ return (
 
 
 
+
+
                 <button
+
                     onClick={() =>
-        navigate(`/employees/${employee.id}`)
-    }
+                        navigate(`/employees/${employee.id}`)
+                    }
 
 
                     className="
@@ -353,6 +424,211 @@ return (
                     View Profile
 
                 </button>
+
+
+
+
+
+
+
+                <button
+
+                    onClick={() =>
+                        navigate(`/employees/${employee.id}/edit`)
+                    }
+
+
+                    className="
+                        mt-5
+                        ml-3
+                        border
+                        border-green-700
+                        text-green-700
+                        px-5
+                        py-2
+                        rounded-lg
+                        hover:bg-green-50
+                    "
+
+                >
+
+                    Edit
+
+                </button>
+
+
+
+
+
+
+
+
+                {
+                    employee.is_active && (
+
+                    <button
+
+                       onClick={() =>
+    setSelectedEmployee(employee)
+}
+
+
+                        className="
+                            mt-5
+                            ml-3
+                            border
+                            border-red-700
+                            text-red-700
+                            px-5
+                            py-2
+                            rounded-lg
+                            hover:bg-red-50
+                        "
+
+                    >
+
+                        Deactivate
+
+                    </button>
+
+                    )
+
+                }
+                {
+    selectedEmployee && (
+
+        <div
+            className="
+                fixed
+                inset-0
+                bg-black
+                bg-opacity-50
+                flex
+                items-center
+                justify-center
+            "
+        >
+
+
+            <div
+                className="
+                    bg-white
+                    rounded-xl
+                    p-8
+                    w-96
+                "
+            >
+
+
+                <h2
+                    className="
+                        text-xl
+                        font-bold
+                        text-[#12304A]
+                    "
+                >
+
+                    Confirm Deactivation
+
+                </h2>
+
+
+
+
+                <p className="mt-4 text-gray-600">
+
+                    Are you sure you want to deactivate
+
+                    {" "}
+
+                    <span className="font-semibold">
+
+                        {selectedEmployee.username}
+
+                    </span>
+
+                    ?
+
+                </p>
+
+
+
+
+
+                <div
+                    className="
+                        flex
+                        justify-end
+                        gap-3
+                        mt-6
+                    "
+                >
+
+
+                    <button
+
+                        onClick={() =>
+                            setSelectedEmployee(null)
+                        }
+
+                        className="
+                            px-5
+                            py-2
+                            border
+                            rounded-lg
+                        "
+
+                    >
+
+                        Cancel
+
+                    </button>
+
+
+
+
+
+                    <button
+
+                        onClick={() => {
+
+                            deactivateEmployee(
+                                selectedEmployee.id
+                            );
+
+
+                            setSelectedEmployee(null);
+
+                        }}
+
+
+                        className="
+                            px-5
+                            py-2
+                            bg-red-700
+                            text-white
+                            rounded-lg
+                        "
+
+                    >
+
+                        Confirm
+
+                    </button>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+    )
+}
+
+
 
 
 

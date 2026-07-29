@@ -17,6 +17,7 @@ import HRDocumentLibrary from "./templates/pages/HRDocumentLibrary";
 import SignDocument from "./templates/pages/SignDocument";
 import EmployeeManagement from "./templates/pages/EmployeeManagement";
 import EmployeeProfile from "./templates/pages/EmployeeProfile";
+import EditEmployee from "./templates/pages/EditEmployee";
 
 
 function App() {
@@ -128,6 +129,13 @@ function App() {
             <EmployeeProfile />
         </Layout>
     }
+/>
+<Route
+
+    path="/employees/:id/edit"
+
+    element={<EditEmployee />}
+
 />
 
             </Routes>

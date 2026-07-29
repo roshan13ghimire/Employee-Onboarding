@@ -9,6 +9,7 @@ from .serializers import EmployeeListSerializer
 
 from .serializers import SignupSerializer
 from .serializers import EmployeeDetailSerializer
+from .serializers import EmployeeUpdateSerializer
 
 class SignupAPIView(APIView):
 
@@ -129,4 +130,114 @@ class EmployeeDetailAPIView(APIView):
 
         return Response(
             serializer.data
+        )
+class EmployeeUpdateAPIView(APIView):
+
+    permission_classes = [
+        IsAuthenticated,
+        IsHRUser
+    ]
+
+
+    def put(self, request, id):
+
+
+        try:
+
+            employee = EmployeeProfile.objects.get(
+                id=id
+            )
+
+
+        except EmployeeProfile.DoesNotExist:
+
+
+            return Response(
+
+                {
+                    "error": "Employee not found"
+                },
+
+                status=status.HTTP_404_NOT_FOUND
+
+            )
+
+
+
+        serializer = EmployeeUpdateSerializer(
+
+            employee,
+
+            data=request.data
+
+        )
+
+
+
+        if serializer.is_valid():
+
+
+            serializer.save()
+
+
+            return Response(
+
+                {
+                    "message":
+                    "Employee updated successfully"
+                }
+
+            )
+
+
+
+        return Response(
+
+            serializer.errors,
+
+            status=status.HTTP_400_BAD_REQUEST
+
+        )
+class EmployeeDeactivateAPIView(APIView):
+
+    permission_classes = [
+        IsAuthenticated,
+        IsHRUser
+    ]
+
+
+    def patch(self, request, id):
+
+        try:
+
+            employee = EmployeeProfile.objects.get(
+                id=id
+            )
+
+
+        except EmployeeProfile.DoesNotExist:
+
+            return Response(
+
+                {
+                    "error": "Employee not found"
+                },
+
+                status=status.HTTP_404_NOT_FOUND
+
+            )
+
+
+        employee.is_active = False
+
+        employee.save()
+
+
+        return Response(
+
+            {
+                "message":
+                "Employee deactivated successfully"
+            }
+
         )

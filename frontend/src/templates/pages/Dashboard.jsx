@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
 import { useNavigate } from "react-router-dom";
+import Card from "../components/Card";
+import Button from "../components/Button";
 
 
 function Dashboard() {
@@ -230,14 +232,7 @@ function Dashboard() {
             {/* Employee Profile */}
 
 
-            <div
-                className="
-                    bg-white
-                    border
-                    border-gray-200
-                    p-8
-                "
-            >
+            <Card>
 
 
                 <h2
@@ -323,7 +318,7 @@ function Dashboard() {
 
 
 
-            </div>
+            </Card>
 
 
 
@@ -641,38 +636,28 @@ function Dashboard() {
 
 
 
-
                             {
-                                doc.status === "PENDING" &&
-                                doc.action_type === "SIGNATURE" &&
+    doc.status === "PENDING" &&
+    doc.action_type === "SIGNATURE" &&
 
 
-                                <button
+    <Button
 
-                                    onClick={() =>
-                                        navigate(
-                                            `/sign-document/${doc.id}`
-                                        )
-                                    }
+        onClick={() =>
+            navigate(
+                `/sign-document/${doc.id}`
+            )
+        }
 
+        className="mt-5"
 
-                                    className="
-                                        mt-5
-                                        bg-[#12304A]
-                                        text-white
-                                        px-5
-                                        py-2
-                                        rounded-lg
-                                    "
+    >
 
-                                >
+        Sign Document
 
-                                    Sign Document
+    </Button>
 
-                                </button>
-
-
-                            }
+}
 
 
 
